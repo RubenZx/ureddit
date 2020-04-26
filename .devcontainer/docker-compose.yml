@@ -1,0 +1,23 @@
+version: "3.7"
+services:
+  php:
+    build:
+      context: .
+    volumes:
+      - ..:/workspace
+    command: apache2-foreground
+    ports:
+      - 8080:80
+  db:
+    image: mysql:8
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      - MYSQL_ROOT_PASSWORD=c0d3igniter
+      - MYSQL_DATABASE=ci4
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ../data:/docker-entrypoint-initdb.d
+volumes:
+  mysql-data:

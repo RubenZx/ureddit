@@ -1,0 +1,36 @@
+{
+  "name": "ureddit",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "php",
+  "workspaceFolder": "/workspace",
+  "remoteUser": "vscode",
+  "settings": {
+    "emmet.includeLanguages": {
+      "twig": "html"
+    },
+    "terminal.integrated.shell.linux": "/bin/zsh",
+    "php.suggest.basic": false,
+    "editor.quickSuggestions": {
+      "comments": true
+    },
+    "php-cs-fixer.onsave": true,
+    "php-cs-fixer.autoFixBySemicolon": true,
+    "php-cs-fixer.rules": "@PhpCsFixer",
+    "php-cs-fixer.config": ".php_cs",
+    "php-cs-fixer.executablePath": "php-cs-fixer",
+    "[php]": {
+      "editor.defaultFormatter": "junstyle.php-cs-fixer",
+      "editor.formatOnSave": true
+    }
+  },
+  "extensions": [
+    "junstyle.php-cs-fixer",
+    "felixfbecker.php-debug",
+    "mblode.twig-language-2",
+    "zignd.html-css-class-completion",
+    "bmewburn.vscode-intelephense-client"
+  ],
+  "remoteEnv": {
+    "PATH": "${containerEnv:PATH}:/workspace/vendor/bin"
+  }
+}
