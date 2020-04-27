@@ -2,9 +2,6 @@
 
 namespace App\Entities;
 
-use CodeIgniter\Entity;
-use JsonSerializable;
-
 /**
  * @property int $id
  * @property ?string $name
@@ -15,16 +12,9 @@ use JsonSerializable;
  * @property Time $created_at
  * @property Time $updated_at
  */
+class User extends SerializableEntity {
+  protected $protected = ['password'];
 
-class User extends Entity {
-  protected int $id;
-
-  public string $name;
-
-  public string $email;
-
-  public string $username;  
-  
   public function setPassword(string $password) {
     $this->attributes['password'] = password_hash($password, PASSWORD_BCRYPT, ['cost' => 11]);
 

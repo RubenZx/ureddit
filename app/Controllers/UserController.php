@@ -15,13 +15,13 @@ class UserController extends ResourceController {
   protected $format = 'json';
 
   public function index() {
-    $users = $this->model->asArray()->findAll();
+    $users = $this->model->findAll();
 
     return $this->respond($users);
   }
 
   public function show($id = null) {
-    $user = $this->model->asArray()->find($id);
+    $user = $this->model->find($id);
 
     return (is_null($user) ? $this->failNotFound() : $this->respond($user));
   }
@@ -55,7 +55,7 @@ class UserController extends ResourceController {
       );
     }
 
-    return ($id === false ? $this->failServerError() : $this->respond($this->model->asArray()->find($id)));
+    return ($id === false ? $this->failServerError() : $this->respond($this->model->find($id)));
   }
 
   public function delete($id = null) {
