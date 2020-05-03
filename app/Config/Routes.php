@@ -3,6 +3,7 @@
 namespace Config;
 
 use App\Controllers\UserController;
+use CodeIgniter\Router\RouteCollection;
 
 // Create a new instance of our RouteCollection class.
 $routes = Services::routes(true);
@@ -44,6 +45,15 @@ $routes->resource('posts',[
   'only' => ['index', 'show','create', 'update', 'delete'],
   'controller' => 'PostController'
 ]);
+
+$routes->group('auth',function (RouteCollection $routes) {
+  $routes->post('login','AuthController::login');
+  $routes->post('revoketoken','AuthController::revokeToken');
+  $routes->post('forgot-password','AuthController::forgotPassword');
+  $routes->get('reset-password','AuthController::resetPassword');
+  $routes->get('active','AuthController::activateAccount');
+});
+
 
 /**
  * --------------------------------------------------------------------

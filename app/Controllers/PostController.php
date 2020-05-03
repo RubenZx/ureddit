@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Entities\Post;
 use App\Models\PostModel;
+use App\Models\UserModel;
 use CodeIgniter\RESTful\ResourceController;
 
 /**
@@ -28,8 +29,12 @@ class PostController extends ResourceController {
 
   public function create() {
     $data = $this->request->getJSON(true);
+    $userModel = new UserModel();
+    if (!$userModel->find($data['author'])) {
+      return $this->failNotFound('Author musts exists');
+    }
+    
     $id = $this->model->insert(new Post($data));
-
     if ($this->model->errors()) {
       return $this->fail(
         ['errors' => $this->model->errors()],

@@ -39,4 +39,8 @@ class UserModel extends Model {
 
     return $this;
   }
+  
+  public function findByEmail(string $email) {
+    return $this->builder($this->table)->where('email',$email)->get(1)->getFirstRow($this->returnType);
+  }
 }
