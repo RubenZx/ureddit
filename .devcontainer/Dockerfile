@@ -29,7 +29,7 @@ RUN apt-get update \
   && rm /tmp/common-setup.sh \
   #
   # Install php extensions
-  && install-php-extensions xdebug intl mysqli \
+  && install-php-extensions xdebug intl mysqli redis \
   && echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/xdebug.ini \
   && echo "xdebug.remote_autostart=on" >> /usr/local/etc/php/conf.d/xdebug.ini \
   #

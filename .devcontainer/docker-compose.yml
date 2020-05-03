@@ -19,5 +19,18 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
       - ../data:/docker-entrypoint-initdb.d
+  mailhog:
+    image: mailhog/mailhog:latest
+    ports:
+      - 1025:1025
+      - 8025:8025
+  cache:
+    image: redis:6-alpine
+    ports:
+      - 6379:6379
+    command: ['--requirepass "secret"']
+    volumes:
+      - redis-data:/data
 volumes:
   mysql-data:
+  redis-data:
