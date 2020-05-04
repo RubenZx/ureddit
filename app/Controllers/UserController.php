@@ -46,7 +46,7 @@ class UserController extends ResourceController {
     helper("email");
     verify_by_email($user->email);
 
-    return  $this->respondCreated(['user' => $id]);
+    return $this->respondCreated(['user' => $id]);
   }
 
   public function update($id = null) {

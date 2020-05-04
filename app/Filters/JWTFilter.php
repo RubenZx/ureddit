@@ -35,8 +35,8 @@ class JWTFilter implements FilterInterface {
       $authorization = $request->getHeader('Authorization');
 
       try {
-        $userId = JWT::decode($authorization->getValueLine(), $authConfig->jwtKey, [$authConfig->jwtAlgorithm]);
-        $user = $userModel->find($userId);
+        $payload = JWT::decode($authorization->getValueLine(), $authConfig->jwtKey, [$authConfig->jwtAlgorithm]);
+        $user = $userModel->find($payload->id);
         $request->user = $user;
 
         return $request;
