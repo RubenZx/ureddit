@@ -52,7 +52,7 @@ $routes->group('auth',function (RouteCollection $routes) {
   $routes->post('login','AuthController::login');
   $routes->post('register','UserController::create');
   $routes->post('forgot-password','AuthController::forgotPassword');
-  $routes->put('reset-password','AuthController::resetPassword');
+  $routes->put('reset-password/(:hash)','AuthController::resetPassword/$1');
   $routes->put('resend-active-account', 'AuthController::resendActivateAccount');
 });
 
