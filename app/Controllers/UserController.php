@@ -27,8 +27,8 @@ class UserController extends ResourceController {
   }
 
   public function create() {
-    $data = $this->request->getJSON(true);
-    $id = $this->model->insert(new User($data));
+    $user = new User($this->request->getJSON(true));
+    $id = $this->model->insert($user);
 
     if ($this->model->errors()) {
       return $this->fail(
@@ -37,9 +37,16 @@ class UserController extends ResourceController {
         null,
         'Bad Request'
       );
-    }
+    } 
 
-    return ($id === false ? $this->failServerError() : $this->respondCreated(['user' => $id]));
+    if ($id === false) {
+      $this->failServerError();
+    } 
+    
+    helper("email");
+    verify_by_email($user->email);
+
+    return  $this->respondCreated(['user' => $id]);
   }
 
   public function update($id = null) {

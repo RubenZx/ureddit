@@ -32,6 +32,10 @@ class Users extends Migration {
         'constraint' => 255,
         'null' => true,
       ],
+      'verified' => [
+        'type' => 'BOOLEAN',
+        'default' => false
+      ],
       'created_at' => [
         'type' => 'DATETIME',
       ],

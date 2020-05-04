@@ -20,6 +20,7 @@ class UserModel extends Model {
     'username',
     'password',
     'avatar',
+    'verified'
   ];
 
   protected $validationRules = [

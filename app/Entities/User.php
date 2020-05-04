@@ -9,6 +9,7 @@ namespace App\Entities;
  * @property string $username
  * @property string $password
  * @property ?string $avatar
+ * @property bool $verified
  * @property Time $created_at
  * @property Time $updated_at
  */
