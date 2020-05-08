@@ -1,9 +1,16 @@
-import { Button, Col, Divider, Input, Link, Row, Spacer } from '@zeit-ui/react'
+import { Col, Divider, Input, Link, Row, Spacer } from '@zeit-ui/react'
 import * as Icon from '@zeit-ui/react-icons'
-import React from 'react'
+import React, { useState } from 'react'
 import Logo from '../assets/logo.png'
+import MyModal from './modal/MyModal'
+import MyButton from './MyButton'
+
+export type modalTypes = 'login' | 'register' | 'forgotPassword'
 
 export default () => {
+  const [visible, setVisible] = useState(false)
+  const [modalType, setModalType] = useState<modalTypes>('login')
+
   return (
     <>
       <Row
@@ -34,16 +41,41 @@ export default () => {
         </Col>
         <Col span={9}>
           <Row justify="end">
-            <Button size="small" type="success" ghost effect={false}>
+            {/* LOGIN */}
+            <MyButton
+              onClick={() => {
+                setModalType('login')
+                setVisible(true)
+              }}
+              size="small"
+              type="success"
+              ghost
+              shadow
+            >
               Login
-            </Button>
+            </MyButton>
+
             <Spacer x={0.5} inline />
-            <Button type="success" size="small" effect={false}>
+            <MyButton
+              onClick={() => {
+                setModalType('register')
+                setVisible(true)
+              }}
+              type="success"
+              size="small"
+              shadow
+            >
               Sign up
-            </Button>
+            </MyButton>
           </Row>
         </Col>
       </Row>
+      <MyModal
+        closeHandler={() => setVisible(false)}
+        typeHandler={(type: modalTypes) => setModalType(type)}
+        open={visible}
+        type={modalType}
+      />
       <Divider y={0} />
     </>
   )

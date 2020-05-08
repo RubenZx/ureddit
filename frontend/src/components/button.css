@@ -1,0 +1,5 @@
+.my-button,
+.my-button:hover {
+  box-shadow: none !important;
+  transform: none !important;
+}
