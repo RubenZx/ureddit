@@ -22,7 +22,7 @@ export default () => {
         }}
       >
         <Col span={4}>
-          <Link href="#" pure>
+          <Link href="#">
             <Row align="middle">
               <img width={32} src={Logo} alt="Logo" />
               <Spacer x={0.5} inline />
