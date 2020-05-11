@@ -1753,10 +1753,10 @@
   resolved "https://registry.yarnpkg.com/@zeit-ui/react-icons/-/react-icons-1.2.1.tgz#6e200adf6870aca0cd4a6e0d2ba5fb5196d53234"
   integrity sha512-K0r7ZmqCB6Tl/tCmrjKXYuoWL9iMxUQem1lzUP/QCEJI+o0v5B0MnrEMzxrlXDFZDN/0wPjna0jcecQTL80GAA==
 
-"@zeit-ui/react@^1.2.0":
-  version "1.2.0-rc.1"
-  resolved "https://registry.yarnpkg.com/@zeit-ui/react/-/react-1.2.0-rc.1.tgz#e4d9191cfd230502f9b083fc7afd5073a30acf61"
-  integrity sha512-Vig9XmTqRD69RoFrswBO0BYRUxOsKwwFYe7Mmm1rYzAzuvlvv++B6vduozrzjeVP2nP8+XvUWMcjX53EZFTYmw==
+"@zeit-ui/react@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@zeit-ui/react/-/react-1.2.1.tgz#8f8e45539f589363b9e92dede4d4dae8317c4a40"
+  integrity sha512-kMJQZ+lM5aw72gtZntKVMjifAwGenprmkeB4HR6mtyitCJIrDF62A+Cy/+kv0ZlMqcy8y9p7KmyMulWgXNDn2g==
   dependencies:
     styled-jsx "^3.2.5"
 
