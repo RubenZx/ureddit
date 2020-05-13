@@ -2,6 +2,7 @@ import { Col, Divider, Input, Link, Row, Spacer } from '@zeit-ui/react'
 import * as Icon from '@zeit-ui/react-icons'
 import React, { useState } from 'react'
 import Logo from '../assets/logo.png'
+import Dropdown from './dropdown/Dropdown'
 import MyModal from './modal/MyModal'
 import MyButton from './MyButton'
 
@@ -30,7 +31,7 @@ export default () => {
             </Row>
           </Link>
         </Col>
-        <Col span={11}>
+        <Col span={10}>
           <Row justify="center">
             <Input
               icon={<Icon.Search />}
@@ -39,7 +40,7 @@ export default () => {
             />
           </Row>
         </Col>
-        <Col span={9}>
+        <Col span={8}>
           <Row justify="end">
             {/* LOGIN */}
             <MyButton
@@ -68,6 +69,9 @@ export default () => {
               Sign up
             </MyButton>
           </Row>
+        </Col>
+        <Col span={2}>
+          <Dropdown />
         </Col>
       </Row>
       <MyModal

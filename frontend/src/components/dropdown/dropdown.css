@@ -1,0 +1,15 @@
+.menu:hover {
+  cursor: pointer;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  margin-top: 2px;
+  transition: background 500ms;
+}
+
+.dropdown-item:hover {
+  cursor: pointer;
+}
