@@ -46,6 +46,7 @@ const RegisterContent: React.FC<TypeHandler> = ({ typeHandler }) => {
           width="100%"
           control={control}
           defaultValue=""
+          status={errors.email && errors.email.message ? 'error' : undefined}
         />
         <Text small type="error">
           {errors.email && errors.email.message}
@@ -58,6 +59,9 @@ const RegisterContent: React.FC<TypeHandler> = ({ typeHandler }) => {
           width="100%"
           control={control}
           defaultValue=""
+          status={
+            errors.password && errors.password.message ? 'error' : undefined
+          }
         />
         <Text small type="error">
           {errors.password && errors.password.message}
@@ -70,6 +74,11 @@ const RegisterContent: React.FC<TypeHandler> = ({ typeHandler }) => {
           width="100%"
           control={control}
           defaultValue=""
+          status={
+            errors.confirmPassword && errors.confirmPassword.message
+              ? 'error'
+              : undefined
+          }
         />
         <Text small type="error">
           {errors.confirmPassword && errors.confirmPassword.message}

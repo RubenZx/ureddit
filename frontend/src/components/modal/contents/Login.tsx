@@ -39,6 +39,7 @@ const LoginContent: React.FC<TypeHandler> = ({ typeHandler }) => {
           width="100%"
           control={control}
           defaultValue=""
+          status={errors.email && errors.email.message ? 'error' : undefined}
         />
         <Text small type="error">
           {errors.email && errors.email.message}
@@ -51,6 +52,9 @@ const LoginContent: React.FC<TypeHandler> = ({ typeHandler }) => {
           name="password"
           control={control}
           defaultValue=""
+          status={
+            errors.password && errors.password.message ? 'error' : undefined
+          }
         />
         <Text small type="error">
           {errors.password && errors.password.message}

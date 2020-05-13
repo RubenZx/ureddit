@@ -39,6 +39,7 @@ const ForgotPasswordContent: React.FC<TypeHandler> = ({ typeHandler }) => {
           width="100%"
           control={control}
           defaultValue=""
+          status={errors.email && errors.email.message ? 'error' : undefined}
         />
         <Text small type="error">
           {errors.email && errors.email.message}
