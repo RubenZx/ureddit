@@ -1,8 +1,9 @@
-import { Col, Input, Link, Spacer, Text } from '@zeit-ui/react'
+import { Col, Input, Link, Note, Spacer, Text } from '@zeit-ui/react'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import Logo from '../../../assets/logo.png'
+import { login } from '../../../services/api'
 import MyButton from '../../MyButton'
 import { TypeHandler } from '../MyModal'
 
@@ -15,11 +16,21 @@ const loginValidationSchema = yup.object().shape({
 })
 
 const LoginContent: React.FC<TypeHandler> = ({ typeHandler }) => {
-  const { handleSubmit, errors, control } = useForm({
+  const { handleSubmit, errors, control, setError, formState } = useForm({
     validationSchema: loginValidationSchema,
   })
 
-  const onSubmit = (values: Record<string, any>) => console.log(values)
+  const onSubmit = async (values: Record<string, any>) => {
+    try {
+      const { accessToken } = await login(values)
+    } catch (error) {
+      setError(
+        'server',
+        error.response.status,
+        error.response.data.messages.error,
+      )
+    }
+  }
 
   return (
     <Col style={{ padding: '12px' }}>
@@ -27,6 +38,16 @@ const LoginContent: React.FC<TypeHandler> = ({ typeHandler }) => {
       <Text h3 style={{ margin: '20px 0px' }}>
         Sign in
       </Text>
+
+      {errors.server && (
+        <>
+          <Note type="error" label="error">
+            {errors.server.message}
+          </Note>
+          <Spacer />
+        </>
+      )}
+
       <form
         onSubmit={(e) => {
           handleSubmit(onSubmit)(e)
@@ -60,7 +81,12 @@ const LoginContent: React.FC<TypeHandler> = ({ typeHandler }) => {
           {errors.password && errors.password.message}
         </Text>
         <Spacer />
-        <MyButton type="success" size="small" shadow>
+        <MyButton
+          type="success"
+          size="small"
+          shadow
+          loading={formState.isSubmitting}
+        >
           Sign in
         </MyButton>
       </form>
