@@ -9,6 +9,6 @@ return [
   'refreshTokenNotFound' => 'Please, submit a valid refresh token cookie.',
   'invalidToken' => 'Your token seems to be invalid.',
   'resetPassword' => 'Password updated correctly.',
-  'userNotFoundError' => 'Credentials must be wrong.'
+  'userNotFoundError' => 'Credentials seem to be wrong.'
 
 ];

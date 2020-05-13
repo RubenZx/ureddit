@@ -57,7 +57,7 @@ class AuthController extends Controller {
       ]);
     }
 
-    return $this->failForbidden();
+    return $this->failForbidden(lang('Auth.userNotFoundError'));
   }
 
   public function refreshToken() {
