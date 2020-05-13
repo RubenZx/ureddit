@@ -32,5 +32,6 @@
   ],
   "remoteEnv": {
     "PATH": "${containerEnv:PATH}:/workspace/vendor/bin"
-  }
+  },
+  "shutdownAction": "none"
 }
