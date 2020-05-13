@@ -8,6 +8,7 @@ return [
   'verifiedAccountError' => 'Your accound must be verified to continue.',
   'refreshTokenNotFound' => 'Please, submit a valid refresh token cookie.',
   'invalidToken' => 'Your token seems to be invalid.',
-  'resetPassword' => 'Password updated correctly.'
+  'resetPassword' => 'Password updated correctly.',
+  'userNotFoundError' => 'Credentials must be wrong.'
 
 ];

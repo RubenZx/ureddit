@@ -37,6 +37,10 @@ class AuthController extends Controller {
      */
     $credentials = $this->request->getJSON();
     $user = $this->userModel->findByEmail($credentials->email);
+    
+    if ($user == null) {
+      return $this->failForbidden(lang('Auth.userNotFoundError'));
+    }
 
     if (!$user->verified) {
       return $this->failForbidden(lang('Auth.verifiedAccountError'));
@@ -53,7 +57,7 @@ class AuthController extends Controller {
       ]);
     }
 
-    return $this->failValidationError();
+    return $this->failForbidden();
   }
 
   public function refreshToken() {
