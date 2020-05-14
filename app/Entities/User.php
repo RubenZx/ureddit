@@ -10,11 +10,19 @@ namespace App\Entities;
  * @property string $password
  * @property ?string $avatar
  * @property bool $verified
+ * @property int $token_version
  * @property Time $created_at
  * @property Time $updated_at
  */
 class User extends SerializableEntity {
   protected $protected = ['password'];
+
+  protected $casts = [
+    'id' => 'int',
+    'status' => 'boolean',
+    'verified' => 'boolean',
+    'token_version' => 'int',
+  ];
 
   public function setPassword(string $password) {
     $this->attributes['password'] = password_hash($password, PASSWORD_BCRYPT, ['cost' => 11]);

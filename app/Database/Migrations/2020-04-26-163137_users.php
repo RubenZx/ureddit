@@ -36,6 +36,11 @@ class Users extends Migration {
         'type' => 'BOOLEAN',
         'default' => false
       ],
+      'token_version' => [
+        'type' => 'INT',
+        'constraint' => 9,
+        'default' => 0,
+      ],
       'created_at' => [
         'type' => 'DATETIME',
       ],
