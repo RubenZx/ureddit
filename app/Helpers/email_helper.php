@@ -11,7 +11,7 @@ if (!function_exists('verify_by_email')) {
     $email->setSubject($subject);
     $email->setMessage(lang("Email.activateAccount",[
       'base_url' => base_url(),
-      'activate_url' => base_url(['auth', 'active', $random_token])
+      'activate_url' => base_url(['api', 'auth', 'active', $random_token])
     ]));
     $email->send();
   }
@@ -25,7 +25,7 @@ if (!function_exists('recover_password')) {
     $email->setTo($userEmail);
     $email->setSubject("Reset password");
     $email->setMessage(lang("Email.forgotPassword",[
-      'reset_url' => base_url(['auth', 'reset-password', $random_token])
+      'reset_url' => base_url(['api', 'auth', 'reset-password', $random_token])
     ]));
     $email->send();
   }

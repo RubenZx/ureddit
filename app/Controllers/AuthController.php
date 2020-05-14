@@ -8,6 +8,7 @@ use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\Controller;
 use Firebase\JWT\JWT;
 use Config\Auth;
+use Exception;
 use stdClass;
 
 /**
@@ -19,6 +20,8 @@ class Credentials {
 
 class AuthController extends Controller {
   use ResponseTrait;
+
+  protected UserModel $userModel;
 
   /**
    *
@@ -48,46 +51,39 @@ class AuthController extends Controller {
 
     $is_valid = password_verify($credentials->password, $user->password);
     if ($is_valid) {
-      $tokens = $this->generateTokens($user->id);
-      
-      $this->response->setCookie('Refresh-Token', $tokens->refresh, MONTH);
-
-      return $this->respond([
-        'accessToken' => $tokens->access,
-      ]);
+      return $this->respond($this->generateTokens($user));
     }
 
     return $this->failForbidden(lang('Auth.userNotFoundError'));
   }
 
+  public function revokeToken() {
+    /** @var User */
+    $user = $this->request->user;
+    $user->token_version += 1;
+    $this->userModel->save($user);
+
+    return $this->respondNoContent();
+  }
+
   public function refreshToken() {
-    $token = $this->request->getCookie('Refresh-Token');
-    if (!$token) {
-      return $this->failNotFound(lang('Auth.refreshTokenNotFound'));
+    $data = $this->request->getJSON();
+
+    if ($data && !$data->refreshToken) {
+      return $this->failNotFound(lang("Auth.refreshTokenNotFound"));
     }
 
     try {
-      $payload = JWT::decode($token, $this->authConfig->jwtRefreshKey, [$this->authConfig->jwtAlgorithm]);
-      $refreshTokens = cache($payload->id);
-      if ($refreshTokens) {
-        if (array_search($token, $refreshTokens) !== false) {
-          throw new \Exception();
-        }
-        cache()->save($payload->id, [...$refreshTokens, $token], MONTH);
-      } else {
-        cache()->save($payload->id, [$token], MONTH);
+      $payload = JWT::decode($data->refreshToken, $this->authConfig->jwtRefreshKey, [$this->authConfig->jwtAlgorithm]);
+      $user = $this->userModel->find($payload->id);
+      if (is_null($user) || $payload->version !== $user->token_version) {
+        throw new Exception();
       }
     } catch (\Exception $e) {
-      return $this->failForbidden(lang('Auth.invalidToken'));
+      return $this->failUnauthorized(lang('Auth.invalidToken'));
     }
 
-    $refresh = cache($payload->id);
-    $tokens = $this->generateTokens($payload->id);
-    $this->response->setCookie('Refresh-Token', $tokens->refresh, MONTH);
-
-    return $this->respond([
-      'accessToken' => $tokens->access,
-    ]);
+    return $this->respond($this->generateTokens($user), false);
   }
 
   public function forgotPassword() {
@@ -111,6 +107,7 @@ class AuthController extends Controller {
 
     $user = $this->userModel->findByEmail($email);
     $user->password = $data->password;
+    $user->token_version += 1;
     $this->userModel->save($user);
 
     return $this->respond(lang("Auth.resetPassword"));
@@ -143,29 +140,29 @@ class AuthController extends Controller {
     return $this->respondNoContent();
   }
 
-  private function generateTokens(string $id) {
+  private function generateTokens(User $user) {
     $tokens = new stdClass();
+    $iat = time();
+    $iss = base_url();
 
-    $tokens->access = JWT::encode(
-      [
-        'id' => $id,
-        'iat' => time(),
-        'exp' => time() + 15 * MINUTE,
-        'iss' => base_url()
-      ], 
-      $this->authConfig->jwtKey, 
-      $this->authConfig->jwtAlgorithm);
+    $user->token_version += 1;
+    $this->userModel->save($user);
+    
+    $tokens->accessToken = JWT::encode([
+      'id' => $user->id,
+      'iat' => $iat,
+      'exp' => $iat + MINUTE * 15,
+      'iss' => $iss,
+    ], $this->authConfig->jwtKey, $this->authConfig->jwtAlgorithm);
 
-    $tokens->refresh = JWT::encode(
-        [
-          'id' => $id,
-          'iat' => time(),
-          'exp' => time() + MONTH,
-          'iss' => base_url()
-        ], 
-        $this->authConfig->jwtRefreshKey, 
-        $this->authConfig->jwtAlgorithm);
-  
+    $tokens->refreshToken = JWT::encode([
+      'id' => $user->id,
+      'iat' => $iat,
+      'exp' => $iat + MONTH,
+      'iss' => $iss,
+      'version' => $user->token_version,
+    ], $this->authConfig->jwtRefreshKey, $this->authConfig->jwtAlgorithm);
+
     return $tokens;
   }
 }

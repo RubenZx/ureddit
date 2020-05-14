@@ -8,7 +8,6 @@ use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\HTTP\IncomingRequest;
-use CodeIgniter\Security\Exceptions\SecurityException;
 use Config\Auth;
 use Config\Services;
 use Firebase\JWT\JWT;
@@ -29,14 +28,21 @@ class JWTFilter implements FilterInterface {
     $this->response = Services::response();
     $this->request = $request;
     if ($request->hasHeader('Authorization')) {
-      /** @var Auth $authConfig */
       $authConfig = new Auth();
       $userModel = new UserModel();
-      $authorization = $request->getHeader('Authorization');
+      $bearer = explode(" ", $request->getHeader('Authorization')->getValue());
 
       try {
-        $payload = JWT::decode($authorization->getValueLine(), $authConfig->jwtKey, [$authConfig->jwtAlgorithm]);
+        if (sizeof($bearer) !== 2) {
+          throw new \Exception();
+        }
+
+        $payload = JWT::decode($bearer[1], $authConfig->jwtKey, [$authConfig->jwtAlgorithm]);
         $user = $userModel->find($payload->id);
+
+        if (is_null($user)) {
+          throw new \Exception();
+        }
         $request->user = $user;
 
         return $request;

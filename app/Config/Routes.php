@@ -36,18 +36,19 @@ $routes->setAutoRoute(true);
 // route since we don't have to scan directories.
 
 $routes->get('/', 'Home::index');
-$routes->group('api', function(RouteCollection $routes){
+$routes->group('api', function(RouteCollection $routes) {
   $routes->resource('users',[
-    'only' => ['index', 'show','create', 'update', 'delete'],
+    'only' => ['index', 'show', 'create', 'update', 'delete'],
     'controller' => 'UserController'
   ]);
   $routes->resource('posts',[
-    'only' => ['index', 'show','create', 'update', 'delete'],
-    'controller' => 'PostController'
+    'only' => ['index', 'show', 'create', 'update', 'delete'],
+    'controller' => 'PostController',
   ]);
   $routes->group('auth',function (RouteCollection $routes) {
     $routes->get('active/(:hash)','AuthController::activateAccount/$1');
-    $routes->get('refresh-token','AuthController::refreshToken');
+    $routes->get('revoke-token', 'AuthController::revokeToken');
+    $routes->post('refresh-token','AuthController::refreshToken');
     $routes->post('login','AuthController::login');
     $routes->post('register','UserController::create');
     $routes->post('forgot-password','AuthController::forgotPassword');
