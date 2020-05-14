@@ -39,15 +39,17 @@ $routes->get('/', 'Home::index');
 $routes->group('api', function(RouteCollection $routes) {
   $routes->resource('users',[
     'only' => ['index', 'show', 'create', 'update', 'delete'],
-    'controller' => 'UserController'
+    'controller' => 'UserController',
+    'filter' => 'auth:get'
   ]);
   $routes->resource('posts',[
     'only' => ['index', 'show', 'create', 'update', 'delete'],
     'controller' => 'PostController',
+    'filter' => 'auth:get'
   ]);
   $routes->group('auth',function (RouteCollection $routes) {
     $routes->get('active/(:hash)','AuthController::activateAccount/$1');
-    $routes->get('revoke-token', 'AuthController::revokeToken');
+    $routes->get('revoke-token', 'AuthController::revokeToken', ['filter' => 'auth']);
     $routes->post('refresh-token','AuthController::refreshToken');
     $routes->post('login','AuthController::login');
     $routes->post('register','UserController::create');

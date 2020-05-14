@@ -24,7 +24,10 @@ class JWTFilter implements FilterInterface {
    * @param IncomingRequest $request
    * @return mixed
    */
-  public function before(RequestInterface $request) {
+  public function before(RequestInterface $request, $params = null) {
+    if (in_array($request->getMethod(), is_null($params) ? [] : $params)) {
+      return $request;
+    }
     $this->response = Services::response();
     $this->request = $request;
     if ($request->hasHeader('Authorization')) {
