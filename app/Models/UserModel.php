@@ -20,7 +20,8 @@ class UserModel extends Model {
     'username',
     'password',
     'avatar',
-    'verified'
+    'verified',
+    'token_version'
   ];
 
   protected $validationRules = [

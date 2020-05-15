@@ -11,7 +11,7 @@ if (!function_exists('verify_by_email')) {
     $email->setSubject($subject);
     $email->setMessage(lang("Email.activateAccount",[
       'base_url' => base_url(),
-      'activate_url' => base_url(['api', 'auth', 'active', $random_token])
+      'activate_url' => 'http://localhost:3000/validate-account/'.$random_token
     ]));
     $email->send();
   }
