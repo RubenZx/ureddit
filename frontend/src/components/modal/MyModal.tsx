@@ -1,10 +1,11 @@
 import { Modal } from '@zeit-ui/react'
 import React from 'react'
-import { modalTypes } from '../Navbar'
+import { modalTypes } from '../navbar/GeneralBar'
 import modalContent from './ModalContents'
 
 export interface TypeHandler {
   typeHandler: (type: modalTypes) => void
+  closeHandler?: () => void
 }
 
 interface MyModalProps extends TypeHandler {
@@ -19,7 +20,7 @@ const MyModal = ({ type, open, closeHandler, typeHandler }: MyModalProps) => {
       <Modal.Content>
         {React.createElement(
           modalContent[type] as React.ComponentClass<TypeHandler>,
-          { typeHandler: typeHandler },
+          { typeHandler: typeHandler, closeHandler: closeHandler },
         )}
       </Modal.Content>
     </Modal>

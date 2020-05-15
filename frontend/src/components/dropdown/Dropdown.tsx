@@ -5,6 +5,7 @@ import { LogOut, Moon, Sun, User as UserIcon } from '@zeit-ui/react-icons'
 import { useCallback, useRef, useState } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import { useOutsideClick } from '../../hooks/useOutsideClick'
+import { logout } from '../../services/api'
 import { useTheme } from '../ThemeContext'
 import './dropdown.css'
 import DropdownItem from './DropdownItem'
@@ -61,7 +62,9 @@ const Dropdown = () => {
               )}
 
               <Divider y={0} />
-              <DropdownItem leftIcon={<LogOut />}>Log out</DropdownItem>
+              <DropdownItem leftIcon={<LogOut />} onClick={() => logout()}>
+                Log out
+              </DropdownItem>
             </div>
           </CSSTransition>
         </div>

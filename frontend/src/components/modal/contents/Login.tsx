@@ -4,6 +4,7 @@ import { Controller, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import Logo from '../../../assets/logo.png'
 import { login } from '../../../services/api'
+import { LocalStorageService } from '../../../services/LocalStorage'
 import MyButton from '../../MyButton'
 import { TypeHandler } from '../MyModal'
 
@@ -22,7 +23,9 @@ const LoginContent: React.FC<TypeHandler> = ({ typeHandler }) => {
 
   const onSubmit = async (values: Record<string, any>) => {
     try {
-      const { accessToken } = await login(values)
+      const tokens = await login(values)
+      LocalStorageService.setTokens(tokens)
+      window.location.reload(false)
     } catch (error) {
       setError(
         'server',
