@@ -27,6 +27,10 @@ export const validateAccount = async (hash: string) => {
   return res.data.message
 }
 
+export const resendVerificationCode = async (email: Record<string, any>) => {
+  await api.put('auth/resend-active-account', email)
+}
+
 export const refreshToken = async () => {
   const { refreshToken } = LocalStorageService
   if (refreshToken) {

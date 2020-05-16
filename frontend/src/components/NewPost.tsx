@@ -13,7 +13,8 @@ import { Image } from '@zeit-ui/react-icons'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import * as yup from 'yup'
-import MyButton from './MyButton'
+import IconButton from './buttons/IconButton'
+import MyButton from './buttons/MyButton'
 
 const Tags = [
   { value: '1', content: 'Tag-1' },
@@ -71,7 +72,7 @@ const NewPost = () => {
                     ))}
                   </Select>
                 </Col>
-                <Col span={17}>
+                <Col span={16}>
                   <Controller
                     as={Input}
                     name="title"
@@ -84,10 +85,11 @@ const NewPost = () => {
                     }
                   />
                 </Col>
-                <Col span={1}>
-                  <Row align="middle" justify="center">
-                    <Image />
-                  </Row>
+                <Col span={2}>
+                  <IconButton
+                    icon={Image}
+                    onClick={(event) => event.preventDefault()}
+                  />
                 </Col>
               </Row>
               <Controller
@@ -108,7 +110,10 @@ const NewPost = () => {
                 <Col>
                   <Row justify="end">
                     <MyButton
-                      onClick={() => console.log('Aborting...')}
+                      onClick={(e) => {
+                        e.preventDefault()
+                        console.log('Aborting...')
+                      }}
                       size="small"
                       type="abort"
                     >

@@ -1,7 +1,7 @@
 import { Row, Spacer } from '@zeit-ui/react'
 import React, { useState } from 'react'
+import MyButton from '../buttons/MyButton'
 import MyModal from '../modal/MyModal'
-import MyButton from '../MyButton'
 
 export type modalTypes = 'login' | 'register' | 'forgotPassword'
 

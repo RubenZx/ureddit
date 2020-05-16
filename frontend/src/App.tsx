@@ -4,9 +4,12 @@ import { Route, Router, Routes } from 'react-router-dom'
 import Navbar from './components/navbar'
 import NewPost from './components/NewPost'
 import NotFound from './components/NotFound'
+import Posts from './components/post/Posts'
+import Profile from './components/Profile'
 import ThemeProvider from './components/ThemeContext'
 import ValidateAccount from './components/ValidateAccount'
 import { history } from './routes/history'
+import PrivateRoute from './routes/PrivateRoute'
 import { refreshToken } from './services/api'
 
 const App = () => {
@@ -20,13 +23,15 @@ const App = () => {
         <CSSBaseline />
         <Navbar />
         <Routes>
-          <Route path="/" element={<></>} />
-          <Route path="/newpost" element={<NewPost />} />
+          <Route path="/" element={<Posts />} />
+          <PrivateRoute path="/submit" element={<NewPost />} />
+          {/* <Route path="/newpost" element={<NewPost />} /> */}
           <Route path="/validate-account" element={<ValidateAccount />} />
           <Route
             path="/validate-account/:validationCode"
             element={<ValidateAccount />}
           />
+          <Route path="/u/:userName" element={<Profile />} />
           <Route path="/*" element={<NotFound />} />
         </Routes>
       </Router>

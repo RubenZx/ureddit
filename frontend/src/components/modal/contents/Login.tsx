@@ -5,7 +5,7 @@ import * as yup from 'yup'
 import Logo from '../../../assets/logo.png'
 import { login } from '../../../services/api'
 import { LocalStorageService } from '../../../services/LocalStorage'
-import MyButton from '../../MyButton'
+import MyButton from '../../buttons/MyButton'
 import { TypeHandler } from '../MyModal'
 
 const loginValidationSchema = yup.object().shape({

@@ -3,7 +3,7 @@ import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import Logo from '../../../assets/logo.png'
-import MyButton from '../../MyButton'
+import MyButton from '../../buttons/MyButton'
 import { TypeHandler } from '../MyModal'
 
 const forgotPasswordValidationSchema = yup.object().shape({

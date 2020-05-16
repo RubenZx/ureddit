@@ -1,20 +1,12 @@
-import {
-  Card,
-  Col,
-  Input,
-  Link,
-  Row,
-  Spacer,
-  Text,
-  useToasts,
-} from '@zeit-ui/react'
+import { Card, Col, Input, Row, Spacer, Text, useToasts } from '@zeit-ui/react'
 import { Mail } from '@zeit-ui/react-icons'
 import { NormalTypes } from '@zeit-ui/react/dist/utils/prop-types'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useParams } from 'react-router'
 import { validateAccount } from '../services/api'
-import MyButton from './MyButton'
+import MyButton from './buttons/MyButton'
+import ResendEmail from './ResendEmail'
 
 export default () => {
   const { validationCode } = useParams()
@@ -67,9 +59,7 @@ export default () => {
                 defaultValue={validationCode}
               />
               <Row>
-                <Text small>
-                  Didn't receive anything? <Link color>Resend email</Link>
-                </Text>
+                <ResendEmail />
               </Row>
               <Spacer />
               <Row justify="end">

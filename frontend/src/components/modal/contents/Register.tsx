@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router'
 import * as yup from 'yup'
 import Logo from '../../../assets/logo.png'
 import { register } from '../../../services/api'
-import MyButton from '../../MyButton'
+import MyButton from '../../buttons/MyButton'
 import { TypeHandler } from '../MyModal'
 
 const registerValidationSchema = yup.object().shape({
@@ -39,7 +39,7 @@ const RegisterContent: React.FC<TypeHandler> = ({
       if (closeHandler) {
         closeHandler()
       }
-      navigate('validate-account')
+      navigate('validate-account?email=' + values.email)
     } catch (error) {
       setError(
         'server',
