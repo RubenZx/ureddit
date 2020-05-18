@@ -9,6 +9,7 @@ namespace App\Entities;
  * @property string $title
  * @property string $description
  * @property ?int $likes
+ * @property int $id_tag
  * @property Time $created_at
  * @property Time $updated_at
  */

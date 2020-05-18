@@ -29,11 +29,9 @@ class PostController extends ResourceController {
 
   public function create() {
     $data = $this->request->getJSON(true);
-    $userModel = new UserModel();
-    if (!$userModel->find($data['author'])) {
-      return $this->failNotFound('Author musts exists');
-    }
-    
+    $user = $this->request->user;
+    $data['author'] = $user->id;
+
     $id = $this->model->insert(new Post($data));
     if ($this->model->errors()) {
       return $this->fail(

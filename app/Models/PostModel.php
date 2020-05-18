@@ -20,6 +20,7 @@ class PostModel extends Model {
     'description',
     'image',
     'likes',
+    'id_tag'
   ];
 
   protected $validationRules = [

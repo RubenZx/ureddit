@@ -13,8 +13,7 @@ class FileController extends ResourceController {
       foreach ($files as $file) {
         $name = $file->getRandomName();
         $file->move(ROOTPATH.implode(DIRECTORY_SEPARATOR, ['public', 'images']), $name);
-        [$code] = explode('.', $name);
-        $uploaded[] = $code;
+        $uploaded[] = $name;
       }
 
       return $this->respond(['uploaded' => $uploaded]);
