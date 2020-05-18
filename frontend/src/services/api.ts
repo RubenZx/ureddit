@@ -39,13 +39,52 @@ export const refreshToken = async () => {
   }
 }
 
+export const sendFiles = async (files: File[]) => {
+  const fd = new FormData()
+  files.forEach((file) => {
+    fd.append('files[]', file, file.name)
+  })
+  const res = await api.post('images', fd, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  })
+  return { image: res.data.uploaded[0] }
+}
+
+export const createPost = async (
+  data: Record<'title' | 'id_tag' | 'description' | 'image', string>,
+) => {
+  const res = await api.post('posts', data)
+  return res.data
+}
+
+export const getPosts = async () => {
+  const res = await api.get('posts')
+  const posts = res.data.map(async (post: any) => {
+    const user = await api.get('users/' + post.author)
+    return { ...post, author: user.data.username }
+  })
+  return Promise.all(posts)
+}
+
+export const getTags = async () => {
+  const res = await api.get('tags')
+  return res.data as Record<'id' | 'name', string>[]
+}
+
+export const getUserById = async (id: string) => {
+  const res = await api.get('users/' + id)
+  return res.data.username as Record<'username', string>
+}
+
 api.interceptors.request.use(
   (config) => {
     const { accessToken } = LocalStorageService
     if (accessToken) {
       config.headers['Authorization'] = `Bearer ${accessToken}`
     }
-    config.headers['Content-Type'] = 'application/json'
+    if (!!config.headers['Content-Type']) {
+      config.headers['Content-Type'] = 'application/json'
+    }
     return config
   },
   (error) => Promise.reject(error),
