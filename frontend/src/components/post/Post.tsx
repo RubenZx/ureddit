@@ -24,6 +24,8 @@ export default ({
   updated_at,
 }: PostType) => {
   const navigate = useNavigate()
+  const date = new Date(created_at)
+
   return (
     <Row justify="center" style={{ marginTop: '20px' }}>
       <Card style={{ maxWidth: '600pt' }}>
@@ -32,12 +34,13 @@ export default ({
             <IconButton
               icon={ArrowUp}
               onClick={(event) => event.preventDefault()}
+              style={{ paddingRight: '0.5rem' }}
             />
-
             <Row justify="center">{likes}</Row>
             <IconButton
               icon={ArrowDown}
               onClick={(event) => event.preventDefault()}
+              style={{ paddingRight: '0.5rem' }}
             />
           </Col>
           <Col>
@@ -46,12 +49,12 @@ export default ({
               <Link color onClick={() => navigate('/u/' + author)}>
                 u/{author}
               </Link>{' '}
-              {created_at.toISOString().slice(0, 10)}
+              {`${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`}
             </Text>
             <Text h4 style={{ margin: '0.5rem 0rem 1rem' }}>
               {title}
             </Text>
-            <Image width={300} src={image} />
+            <Image width={300} src={'images/' + image} />
             <Text p style={{ marginTop: '1rem' }}>
               {description}
             </Text>

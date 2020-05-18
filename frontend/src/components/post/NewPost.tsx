@@ -10,30 +10,43 @@ import {
   Textarea,
 } from '@zeit-ui/react'
 import { Image } from '@zeit-ui/react-icons'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import * as yup from 'yup'
-import IconButton from './buttons/IconButton'
-import MyButton from './buttons/MyButton'
-
-const Tags = [
-  { value: '1', content: 'Tag-1' },
-  { value: '2', content: 'Tag-2' },
-  { value: '3', content: 'Tag-3' },
-]
+import { createPost, getTags, sendFiles } from '../../services/api'
+import IconButton from '../buttons/IconButton'
+import MyButton from '../buttons/MyButton'
+import ImageForm from '../images/ImageForm'
 
 const postValidationSchema = yup.object().shape({
-  title: yup.string().length(300).required('Please, enter a title'),
+  title: yup.string().required('Please, enter a title'),
   tag: yup.number(),
-  description: yup.string().required('Please, give a description'),
+  description: yup.string(),
 })
 
 const NewPost = () => {
+  const [open, setOpen] = useState(false)
+  const [file, setFile] = useState<File[]>([])
+  const [tags, setTags] = useState<Record<'id' | 'name', string>[]>()
+  const [fileError, setFileError] = useState(false)
+
   const { handleSubmit, errors, control } = useForm({
     validationSchema: postValidationSchema,
   })
 
-  const onSubmit = (values: Record<string, any>) => console.log(values)
+  const onSubmit = async (
+    values: Record<'title' | 'id_tag' | 'description', string>,
+  ) => {
+    const res = await sendFiles(file)
+    res.image += file[0].type
+    createPost({ ...values, ...res })
+  }
+
+  useEffect(() => {
+    ;(async () => {
+      setTags(await getTags())
+    })()
+  }, [])
 
   return (
     <Row
@@ -55,6 +68,7 @@ const NewPost = () => {
             <form
               style={{ width: '100%' }}
               onSubmit={(e) => {
+                setFileError(file && file.length < 1 ? true : false)
                 handleSubmit(onSubmit)(e)
               }}
             >
@@ -64,13 +78,19 @@ const NewPost = () => {
                 style={{ marginBottom: '20px' }}
               >
                 <Col span={6}>
-                  <Select placeholder="Choose a tag">
-                    {Tags.map((t) => (
-                      <Select.Option key={t.content} value={t.value}>
-                        {t.content}
-                      </Select.Option>
-                    ))}
-                  </Select>
+                  <Controller
+                    name="id_tag"
+                    as={Select}
+                    placeholder="Choose a tag"
+                    control={control}
+                  >
+                    {tags &&
+                      tags.map((t) => (
+                        <Select.Option key={t.id} value={t.id}>
+                          {t.name}
+                        </Select.Option>
+                      ))}
+                  </Controller>
                 </Col>
                 <Col span={16}>
                   <Controller
@@ -88,7 +108,21 @@ const NewPost = () => {
                 <Col span={2}>
                   <IconButton
                     icon={Image}
-                    onClick={(event) => event.preventDefault()}
+                    onClick={(event) => {
+                      event.preventDefault()
+                      setOpen(true)
+                    }}
+                    style={{
+                      height: '36px',
+                      paddingRight: '0.5rem',
+                      borderColor: fileError ? '#ff0000' : undefined,
+                    }}
+                  />
+                  <ImageForm
+                    file={file}
+                    open={open}
+                    setClose={() => setOpen(false)}
+                    setFile={(file: File[]) => setFile(file)}
                   />
                 </Col>
               </Row>
@@ -97,13 +131,9 @@ const NewPost = () => {
                 name="description"
                 placeholder="Description..."
                 width="100%"
+                minHeight="350px"
                 control={control}
                 defaultValue=""
-                status={
-                  errors.description && errors.description.message
-                    ? 'error'
-                    : undefined
-                }
               />
 
               <Row justify="space-between" style={{ marginTop: '20px' }}>
