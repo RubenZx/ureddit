@@ -28,7 +28,7 @@ const Navbar = () => {
             </Row>
           </Link>
         </Col>
-        <Col span={13}>
+        <Col span={11}>
           <Row justify="center">
             <Input
               icon={<Icon.Search />}
@@ -37,7 +37,7 @@ const Navbar = () => {
             />
           </Row>
         </Col>
-        <Col span={8}>{logged ? <LoggedBar /> : <GeneralBar />}</Col>
+        <Col span={10}>{logged ? <LoggedBar /> : <GeneralBar />}</Col>
       </Row>
       <Divider y={0} />
     </>

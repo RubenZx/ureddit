@@ -1,6 +1,7 @@
 import { Col, Input, Link, Note, Spacer, Text } from '@zeit-ui/react'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router'
 import * as yup from 'yup'
 import Logo from '../../../assets/logo.png'
 import { login } from '../../../services/api'
@@ -20,11 +21,13 @@ const LoginContent: React.FC<TypeHandler> = ({ typeHandler }) => {
   const { handleSubmit, errors, control, setError, formState } = useForm({
     validationSchema: loginValidationSchema,
   })
+  const navigate = useNavigate()
 
   const onSubmit = async (values: Record<string, any>) => {
     try {
       const tokens = await login(values)
       LocalStorageService.setTokens(tokens)
+      navigate('/')
       window.location.reload(false)
     } catch (error) {
       setError(

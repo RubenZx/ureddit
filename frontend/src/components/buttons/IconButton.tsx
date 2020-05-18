@@ -5,16 +5,17 @@ import React from 'react'
 interface IconButtonProps {
   icon: Icon
   onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
+  style?: React.CSSProperties
 }
 
-export default ({ icon, onClick }: IconButtonProps) => (
+export default ({ icon, onClick, style }: IconButtonProps) => (
   <Row align="middle" justify="center">
     <Button
       auto
       type="abort"
       icon={React.createElement(icon)}
       onClick={onClick}
-      style={{ paddingLeft: '0.5rem' }}
+      style={style}
     />
   </Row>
 )

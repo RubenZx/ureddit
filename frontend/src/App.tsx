@@ -2,8 +2,8 @@ import { CSSBaseline } from '@zeit-ui/react'
 import React, { useEffect } from 'react'
 import { Route, Router, Routes } from 'react-router-dom'
 import Navbar from './components/navbar'
-import NewPost from './components/NewPost'
 import NotFound from './components/NotFound'
+import NewPost from './components/post/NewPost'
 import Posts from './components/post/Posts'
 import Profile from './components/Profile'
 import ThemeProvider from './components/ThemeContext'
@@ -25,7 +25,6 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Posts />} />
           <PrivateRoute path="/submit" element={<NewPost />} />
-          {/* <Route path="/newpost" element={<NewPost />} /> */}
           <Route path="/validate-account" element={<ValidateAccount />} />
           <Route
             path="/validate-account/:validationCode"
