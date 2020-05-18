@@ -42,6 +42,10 @@ $routes->group('api', function(RouteCollection $routes) {
     'controller' => 'UserController',
     'filter' => 'auth:get'
   ]);
+  $routes->resource('tags',[
+    'only' => ['index', 'show'],
+    'controller' => 'TagController',
+  ]);
   $routes->resource('posts',[
     'only' => ['index', 'show', 'create', 'update', 'delete'],
     'controller' => 'PostController',

@@ -11,6 +11,7 @@ namespace App\Entities;
  * @property ?string $avatar
  * @property bool $verified
  * @property int $token_version
+ * @property int $id_tag
  * @property Time $created_at
  * @property Time $updated_at
  */

@@ -30,6 +30,10 @@ class Post extends Migration {
         'constraint' => 9,
         'default' => 0,
       ],
+      'id_tag' => [
+        'type' => 'INT',
+        'constraint' => 9,
+      ],
       'created_at' => [
         'type' => 'DATETIME'
       ],
@@ -40,6 +44,7 @@ class Post extends Migration {
     ]);
     $this->forge->addKey('created_at');
     $this->forge->addForeignKey('author','users','id');
+    $this->forge->addForeignKey('id_tag', 'tags', 'id');
     $this->forge->createTable('posts');
   }
 
