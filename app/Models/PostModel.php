@@ -18,16 +18,16 @@ class PostModel extends Model {
   protected $useTimestamps = true;
 
   protected $allowedFields = [
-    'author',
+    'user_id',
     'title',
     'description',
     'image',
     'likes',
-    'id_tag'
+    'tag_id'
   ];
 
   protected $validationRules = [
-    'author' => 'required',
+    'user_id' => 'required',
     'title' => 'required',
     'image' => 'required',
   ];

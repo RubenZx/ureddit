@@ -15,7 +15,7 @@ class TagController extends ResourceController {
   protected $format = 'json';
 
   public function index() {
-    $tags = $this->model->findAll();
+    $tags = $this->model->reindex(false)->with(false)->findAll();
 
     return $this->respond($tags);
   }

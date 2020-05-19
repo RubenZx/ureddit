@@ -9,6 +9,8 @@ use Tatter\Relations\Traits\EntityTrait;
 class SerializableEntity extends Entity implements JsonSerializable {
   use EntityTrait;
 
+  protected $primaryKey = 'id';
+
   protected $protected = [];
 
   public function jsonSerialize() {

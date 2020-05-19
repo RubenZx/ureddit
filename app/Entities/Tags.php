@@ -9,4 +9,5 @@ use CodeIgniter\Entity;
  * @property string $name
  */
 class Tags extends SerializableEntity {
+  protected $table = 'tags';
 }

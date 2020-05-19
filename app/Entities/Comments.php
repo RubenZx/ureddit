@@ -13,4 +13,5 @@ namespace App\Entities;
  * @property Time $updated_at
  */
 class Comments extends SerializableEntity {
+  protected $table = 'comments';
 }

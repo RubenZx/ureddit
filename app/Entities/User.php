@@ -16,6 +16,8 @@ namespace App\Entities;
  * @property Time $updated_at
  */
 class User extends SerializableEntity {
+  protected $table = 'users';
+
   protected $protected = ['password'];
 
   protected $casts = [

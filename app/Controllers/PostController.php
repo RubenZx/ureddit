@@ -16,7 +16,7 @@ class PostController extends ResourceController {
   protected $format = 'json';
 
   public function index() {
-    $posts = $this->model->findAll();
+    $posts = $this->model->reindex(false)->with("users")->paginate();
 
     return $this->respond($posts);
   }
@@ -30,7 +30,7 @@ class PostController extends ResourceController {
   public function create() {
     $data = $this->request->getJSON(true);
     $user = $this->request->user;
-    $data['author'] = $user->id;
+    $data['user_id'] = $user->id;
 
     $id = $this->model->insert(new Post($data));
     if ($this->model->errors()) {
@@ -72,5 +72,17 @@ class PostController extends ResourceController {
     $this->model->delete($id);
   
     return $this->respondDeleted(['deleted' => $id]);
+  }
+
+  public function postsByUser($user_id = null) {
+    $userModel = new UserModel();
+
+    if (is_null($userModel->find($user_id))) {
+      return $this->failNotFound();
+    }
+
+    $res = $this->model->reindex(false)->with('users')->where('user_id', $user_id)->findAll();
+  
+    return $this->respond($res);
   }
 }

@@ -37,6 +37,8 @@ $routes->setAutoRoute(true);
 
 $routes->get('/', 'Home::index');
 $routes->group('api', function(RouteCollection $routes) {
+  $routes->get('users/(:num)/posts', 'PostController::postsByUser/$1');
+
   $routes->resource('users',[
     'only' => ['index', 'show', 'create', 'update', 'delete'],
     'controller' => 'UserController',

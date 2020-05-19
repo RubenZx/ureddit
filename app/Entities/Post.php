@@ -14,4 +14,5 @@ namespace App\Entities;
  * @property Time $updated_at
  */
 class Post extends SerializableEntity {
+  protected $table = 'posts';
 }
