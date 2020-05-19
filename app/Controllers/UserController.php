@@ -21,7 +21,7 @@ class UserController extends ResourceController {
   }
 
   public function show($id = null) {
-    $user = $this->model->find($id);
+    $user = $this->model->findByIdOrUsername($id);
 
     return (is_null($user) ? $this->failNotFound() : $this->respond($user));
   }

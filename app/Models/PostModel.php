@@ -4,8 +4,11 @@ namespace App\Models;
 
 use App\Entities\Post;
 use CodeIgniter\Model;
+use Tatter\Relations\Traits\ModelTrait;
 
 class PostModel extends Model {
+  use ModelTrait;
+
   protected $DBGroup = 'default';
 
   protected $table = 'posts';

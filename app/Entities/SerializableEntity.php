@@ -4,8 +4,11 @@ namespace App\Entities;
 
 use CodeIgniter\Entity;
 use JsonSerializable;
+use Tatter\Relations\Traits\EntityTrait;
 
 class SerializableEntity extends Entity implements JsonSerializable {
+  use EntityTrait;
+
   protected $protected = [];
 
   public function jsonSerialize() {

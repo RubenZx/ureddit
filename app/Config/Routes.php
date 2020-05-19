@@ -51,7 +51,7 @@ $routes->group('api', function(RouteCollection $routes) {
     'controller' => 'PostController',
     'filter' => 'auth:get'
   ]);
-  $routes->post('images', 'FileController::upload', [ 'filter' => 'auth' ]);
+  $routes->post('images', 'FileController::upload', ['filter' => 'auth']);
   $routes->group('auth',function (RouteCollection $routes) {
     $routes->get('active/(:hash)','AuthController::activateAccount/$1');
     $routes->get('revoke-token', 'AuthController::revokeToken', ['filter' => 'auth']);

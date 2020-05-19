@@ -4,8 +4,11 @@ namespace App\Models;
 
 use App\Entities\User;
 use CodeIgniter\Model;
+use \Tatter\Relations\Traits\ModelTrait;
 
 class UserModel extends Model {
+  use ModelTrait;
+
   protected $DBGroup = 'default';
 
   protected $table = 'users';
@@ -44,5 +47,9 @@ class UserModel extends Model {
   
   public function findByEmail(string $email) {
     return $this->builder($this->table)->where('email',$email)->get(1)->getFirstRow($this->returnType);
+  }
+
+  public function findByIdOrUsername(string $value) {
+    return $this->builder($this->table)->where('username',$value)->orWhere('id', $value)->get(1)->getFirstRow($this->returnType);
   }
 }

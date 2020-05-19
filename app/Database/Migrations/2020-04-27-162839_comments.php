@@ -11,11 +11,11 @@ class Comments extends Migration {
       'content' => [
         'type' => 'TEXT',
       ],
-      'author' => [
+      'user_id' => [
         'type' => 'INT',
         'constraint' => 9,
       ],
-      'id_post' => [
+      'post_id' => [
         'type' => 'INT',
         'constraint' => 9,
       ],
@@ -23,7 +23,7 @@ class Comments extends Migration {
         'type' => 'INT',
         'constraint' => 9,
       ],
-      'id_reply' => [
+      'comment_id' => [
         'type' => 'INT',
         'constraint' => 9,
         'null' => true,
@@ -36,9 +36,9 @@ class Comments extends Migration {
       ],
     ]);
     $this->forge->addKey('created_at');
-    $this->forge->addForeignKey('author','users','id');
-    $this->forge->addForeignKey('id_post','posts','id');
-    $this->forge->addForeignKey('id_reply','comments','id');
+    $this->forge->addForeignKey('user_id','users','id');
+    $this->forge->addForeignKey('post_id','posts','id');
+    $this->forge->addForeignKey('comment_id','comments','id');
     $this->forge->createTable('comments');
   }
 

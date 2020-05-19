@@ -8,7 +8,7 @@ class Post extends Migration {
   public function up() {
     $this->forge->addField('id');
     $this->forge->addField([
-      'author' => [
+      'user_id' => [
         'type' => 'INT',
         'constraint' => 9,
       ],
@@ -30,7 +30,7 @@ class Post extends Migration {
         'constraint' => 9,
         'default' => 0,
       ],
-      'id_tag' => [
+      'tag_id' => [
         'type' => 'INT',
         'constraint' => 9,
       ],
@@ -43,8 +43,8 @@ class Post extends Migration {
 		
     ]);
     $this->forge->addKey('created_at');
-    $this->forge->addForeignKey('author','users','id');
-    $this->forge->addForeignKey('id_tag', 'tags', 'id');
+    $this->forge->addForeignKey('user_id','users','id');
+    $this->forge->addForeignKey('tag_id', 'tags', 'id');
     $this->forge->createTable('posts');
   }
 
