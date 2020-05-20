@@ -1,8 +1,10 @@
-import { Col, Dot, Input, Link, Spacer, Text } from '@zeit-ui/react'
+import { Col, Dot, Input, Link, Spacer, Text, useToasts } from '@zeit-ui/react'
+import { NormalTypes } from '@zeit-ui/react/dist/utils/prop-types'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import Logo from '../../../assets/logo.png'
+import { forgotPassword } from '../../../services/api'
 import MyButton from '../../buttons/MyButton'
 import { TypeHandler } from '../MyModal'
 
@@ -14,7 +16,25 @@ const ForgotPasswordContent: React.FC<TypeHandler> = ({ typeHandler }) => {
   const { handleSubmit, errors, control } = useForm({
     validationSchema: forgotPasswordValidationSchema,
   })
-  const onSubmit = (values: Record<string, any>) => console.log(values)
+
+  const [, setToast] = useToasts()
+  const openToast = (type: NormalTypes, text: string) =>
+    setToast({
+      text,
+      type,
+    })
+
+  const onSubmit = async (values: Record<'email', any>) => {
+    try {
+      await forgotPassword(values)
+      openToast('success', 'Check your email inbox.')
+    } catch (error) {
+      openToast(
+        'error',
+        `${error.response.status}: ${error.response.data.messages.error}`,
+      )
+    }
+  }
   return (
     <Col style={{ padding: '12px' }}>
       <img width={32} src={Logo} alt="Logo" />

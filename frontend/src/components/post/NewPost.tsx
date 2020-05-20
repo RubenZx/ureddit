@@ -8,10 +8,13 @@ import {
   Spacer,
   Text,
   Textarea,
+  useToasts,
 } from '@zeit-ui/react'
 import { Image } from '@zeit-ui/react-icons'
+import { NormalTypes } from '@zeit-ui/react/dist/utils/prop-types'
 import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router'
 import * as yup from 'yup'
 import { createPost, getTags, sendFiles } from '../../services/api'
 import IconButton from '../buttons/IconButton'
@@ -29,17 +32,28 @@ const NewPost = () => {
   const [file, setFile] = useState<File[]>([])
   const [tags, setTags] = useState<Record<'id' | 'name', string>[]>()
   const [fileError, setFileError] = useState(false)
-
+  const [, setToast] = useToasts()
+  const openToast = (type: NormalTypes, text: string) =>
+    setToast({
+      text,
+      type,
+      delay: 2500,
+    })
   const { handleSubmit, errors, control } = useForm({
     validationSchema: postValidationSchema,
   })
 
+  const navigate = useNavigate()
+
   const onSubmit = async (
-    values: Record<'title' | 'id_tag' | 'description', string>,
+    values: Record<'title' | 'tag_id' | 'description', string>,
   ) => {
-    const res = await sendFiles(file)
-    res.image += file[0].type
-    createPost({ ...values, ...res })
+    try {
+      const res = await sendFiles(file)
+      await createPost({ ...values, ...res })
+      openToast('success', 'Post created successfully, redireting to home')
+      setTimeout(() => navigate('/'), 2500)
+    } catch (e) {}
   }
 
   useEffect(() => {
@@ -47,6 +61,12 @@ const NewPost = () => {
       setTags(await getTags())
     })()
   }, [])
+
+  useEffect(() => {
+    if (file !== undefined) {
+      setFileError(false)
+    }
+  }, [file])
 
   return (
     <Row
@@ -79,7 +99,7 @@ const NewPost = () => {
               >
                 <Col span={6}>
                   <Controller
-                    name="id_tag"
+                    name="tag_id"
                     as={Select}
                     placeholder="Choose a tag"
                     control={control}

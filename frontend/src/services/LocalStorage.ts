@@ -27,6 +27,14 @@ export class LocalStorageService {
     return false
   }
 
+  public static get userLogged() {
+    if (!!this.accessToken && !!this.refreshToken) {
+      const { id } = jwtDecode<{ id: string }>(this.accessToken)
+      return { id }
+    }
+    return undefined
+  }
+
   public static clearTokens(): void {
     localStorage.removeItem('accessToken')
     localStorage.removeItem('refreshToken')

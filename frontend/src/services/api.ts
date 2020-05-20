@@ -1,5 +1,6 @@
 import axios, { AxiosError } from 'axios'
 import { LocalStorageService, Tokens } from './LocalStorage'
+import { Post } from './types'
 
 const api = axios.create({
   baseURL: 'http://localhost:3000/api/',
@@ -27,6 +28,14 @@ export const validateAccount = async (hash: string) => {
   return res.data.message
 }
 
+export const forgotPassword = async (data: Record<'email', string>) => {
+  const res = await api.post('auth/forgot-password', data)
+  return res.data
+}
+
+export const resetPassword = async ({ code, password }: Record<string, any>) =>
+  api.put(`auth/reset-password/${code}`, { password })
+
 export const resendVerificationCode = async (email: Record<string, any>) => {
   await api.put('auth/resend-active-account', email)
 }
@@ -51,19 +60,20 @@ export const sendFiles = async (files: File[]) => {
 }
 
 export const createPost = async (
-  data: Record<'title' | 'id_tag' | 'description' | 'image', string>,
+  data: Record<'title' | 'tag_id' | 'description' | 'image', string>,
 ) => {
   const res = await api.post('posts', data)
   return res.data
 }
 
 export const getPosts = async () => {
-  const res = await api.get('posts')
-  const posts = res.data.map(async (post: any) => {
-    const user = await api.get('users/' + post.author)
-    return { ...post, author: user.data.username }
-  })
-  return Promise.all(posts)
+  const res = await api.get<Post[]>('posts')
+  return res.data
+}
+
+export const getPostsByUserId = async (id: number) => {
+  const res = await api.get<Post[]>('users/' + id + '/posts')
+  return res.data
 }
 
 export const getTags = async () => {
@@ -71,9 +81,14 @@ export const getTags = async () => {
   return res.data as Record<'id' | 'name', string>[]
 }
 
-export const getUserById = async (id: string) => {
+export const getUsername = async (id: string) => {
   const res = await api.get('users/' + id)
   return res.data.username as Record<'username', string>
+}
+
+export const getUser = async (user: string) => {
+  const res = await api.get('users/' + user)
+  return res.data
 }
 
 api.interceptors.request.use(

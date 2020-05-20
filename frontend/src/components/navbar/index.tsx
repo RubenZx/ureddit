@@ -1,6 +1,7 @@
 import { Col, Divider, Input, Link, Row, Spacer } from '@zeit-ui/react'
 import * as Icon from '@zeit-ui/react-icons'
 import React from 'react'
+import { useNavigate } from 'react-router'
 import Logo from '../../assets/logo.png'
 import { LocalStorageService } from '../../services/LocalStorage'
 import GeneralBar from './GeneralBar'
@@ -8,7 +9,7 @@ import LoggedBar from './LoggedBar'
 
 const Navbar = () => {
   const logged = LocalStorageService.isUserLoggedIn
-
+  const navigate = useNavigate()
   return (
     <>
       <Row
@@ -20,7 +21,7 @@ const Navbar = () => {
         }}
       >
         <Col span={3}>
-          <Link href="/">
+          <Link onClick={() => navigate('/')}>
             <Row justify="center" align="middle">
               <img width={32} src={Logo} alt="Logo" />
               <Spacer x={0.5} inline />

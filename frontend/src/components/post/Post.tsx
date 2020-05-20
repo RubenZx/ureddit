@@ -1,28 +1,19 @@
-import { Card, Col, Image, Link, Row, Text } from '@zeit-ui/react'
+import { Card, Col, Image, Link, Row, Spacer, Text } from '@zeit-ui/react'
 import { ArrowDown, ArrowUp, MessageSquare, Share } from '@zeit-ui/react-icons'
 import React from 'react'
 import { useNavigate } from 'react-router'
+import { Post } from '../../services/types'
 import IconButton from '../buttons/IconButton'
 
-export interface PostType {
-  author: string
-  image: string
-  title: string
-  description: string
-  likes: number
-  created_at: Date
-  updated_at: Date
-}
-
 export default ({
-  author,
+  user,
   image,
   title,
   description,
   likes,
   created_at,
   updated_at,
-}: PostType) => {
+}: Post) => {
   const navigate = useNavigate()
   const date = new Date(created_at)
 
@@ -46,15 +37,15 @@ export default ({
           <Col>
             <Text small>
               Posted by{' '}
-              <Link color onClick={() => navigate('/u/' + author)}>
-                u/{author}
+              <Link color onClick={() => navigate('/u/' + user.username)}>
+                u/{user.username}
               </Link>{' '}
               {`${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`}
             </Text>
             <Text h4 style={{ margin: '0.5rem 0rem 1rem' }}>
               {title}
             </Text>
-            <Image width={300} src={'images/' + image} />
+            <Image width={300} src={'/images/' + image} />
             <Text p style={{ marginTop: '1rem' }}>
               {description}
             </Text>
@@ -69,6 +60,7 @@ export default ({
                   </Link>
                 </Row>
               </Col>
+              <Spacer x={0.5} />
               <Col>
                 <Row align="middle">
                   <Share size={18} />
