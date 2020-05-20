@@ -25,7 +25,7 @@ if (!function_exists('recover_password')) {
     $email->setTo($userEmail);
     $email->setSubject("Reset password");
     $email->setMessage(lang("Email.forgotPassword",[
-      'reset_url' => base_url(['api', 'auth', 'reset-password', $random_token])
+      'reset_url' => 'http://localhost:3000/reset-password/'.$random_token
     ]));
     $email->send();
   }
