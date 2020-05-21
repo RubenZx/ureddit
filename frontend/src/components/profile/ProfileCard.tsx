@@ -38,7 +38,7 @@ export default ({ user }: { user?: UserType }) => {
               <Row>
                 <Text small>Email</Text>
               </Row>
-              <Link href={`mailto:${user.email}`}>
+              <Link underline href={`mailto:${user.email}`}>
                 <Row align="middle">
                   <AtSign size={16} color={palette.success} />
                   <Spacer x={0.25} />

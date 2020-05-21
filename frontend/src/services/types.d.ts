@@ -4,6 +4,7 @@ export interface Post {
   id: string
   image: string
   likes: string
+  tag: Tag
   tag_id: string
   title: string
   updated_at: string
@@ -11,8 +12,13 @@ export interface Post {
   user_id: string
 }
 
+export interface Tag {
+  id: string
+  name: string
+}
+
 export interface User {
-  avatar: any
+  avatar?: string
   created_at: string
   email: string
   id: number

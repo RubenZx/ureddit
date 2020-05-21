@@ -21,7 +21,7 @@ export default () => {
   }, [])
 
   return (
-    <Row style={{ marginTop: '20px' }}>
+    <Row style={{ marginTop: '20px', marginBottom: '20px' }}>
       <Col>
         {LocalStorageService.isUserLoggedIn && (
           <Row justify="center">

@@ -7,7 +7,7 @@ import Post from '../post/Post'
 import PostsNotFound from '../post/PostsNotFound'
 import ProfileCard from './ProfileCard'
 
-const MyRow = {
+export const MyRow = {
   display: 'flow-root',
   margin: '0px auto',
   maxWidth: '782pt',

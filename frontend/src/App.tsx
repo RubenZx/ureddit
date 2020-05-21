@@ -5,6 +5,7 @@ import Navbar from './components/navbar'
 import NotFound from './components/NotFound'
 import NewPost from './components/post/NewPost'
 import Posts from './components/post/Posts'
+import PostWithComments from './components/post/PostWithComments'
 import Profile from './components/profile/Profile'
 import ResetPassword from './components/ResetPassword'
 import ThemeProvider from './components/ThemeContext'
@@ -40,6 +41,7 @@ const App = () => {
             element={<ValidateAccount />}
           />
           <Route path="/u/:username" element={<Profile />} />
+          <Route path="/comments/:postid" element={<PostWithComments />} />
           <Route path="/*" element={<NotFound />} />
         </Routes>
       </Router>

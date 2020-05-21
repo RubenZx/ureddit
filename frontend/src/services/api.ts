@@ -71,6 +71,11 @@ export const getPosts = async () => {
   return res.data
 }
 
+export const getPost = async (id: number) => {
+  const res = await api.get<Post>('posts/' + id)
+  return res.data
+}
+
 export const getPostsByUserId = async (id: number) => {
   const res = await api.get<Post[]>('users/' + id + '/posts')
   return res.data
