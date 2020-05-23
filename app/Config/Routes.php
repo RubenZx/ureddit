@@ -49,6 +49,7 @@ $routes->group('api', function(RouteCollection $routes) {
   ]);
   
   $routes->post('posts/(:num)/like', 'PostController::likePost/$1', ['filter' => 'auth']);
+  $routes->post('posts/(:num)/comment', 'CommentController::comment/$1',  ['filter' => 'auth']);
 
   $routes->resource('posts',[
     'only' => ['index', 'show', 'create', 'update', 'delete'],

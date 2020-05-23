@@ -19,7 +19,9 @@ class CommentsModel extends Model {
 
   protected $allowedFields = [
     'content',
-    'likes'
+    'is_reply',
+    'user_id',
+    'comment_id'
   ];
 
   protected $validationRules = [

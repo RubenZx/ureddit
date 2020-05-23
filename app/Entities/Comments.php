@@ -5,10 +5,9 @@ namespace App\Entities;
 /**
  * @property int $id
  * @property string $content
- * @property int $author
- * @property int $id_post
- * @property ?int $likes
- * @property int $id_reply
+ * @property bool $is_reply
+ * @property int $user_id
+ * @property int $reply_id
  * @property Time $created_at
  * @property Time $updated_at
  */
