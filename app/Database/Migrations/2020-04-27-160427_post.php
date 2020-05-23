@@ -28,7 +28,6 @@ class Post extends Migration {
       'likes' => [
         'type' => 'INT',
         'constraint' => 9,
-        'default' => 0,
       ],
       'tag_id' => [
         'type' => 'INT',

@@ -16,13 +16,13 @@ class PostController extends ResourceController {
   protected $format = 'json';
 
   public function index() {
-    $posts = $this->model->reindex(false)->with("users")->paginate();
+    $posts = $this->model->orderBy("created_at", "DESC")->reindex(false)->with(["users", "tags", "likes"])->paginate();
 
     return $this->respond($posts);
   }
 
   public function show($id = null) {
-    $post = $this->model->find($id);
+    $post = $this->model->reindex(false)->with(["users", "tags"])->find($id);
 
     return (is_null($post) ? $this->failNotFound() : $this->respond($post));
   }
@@ -81,8 +81,23 @@ class PostController extends ResourceController {
       return $this->failNotFound();
     }
 
-    $res = $this->model->reindex(false)->with('users')->where('user_id', $user_id)->findAll();
+    $res = $this->model->orderBy("created_at", "DESC")->reindex(false)->with(['users', 'tags'])->where('user_id', $user_id)->findAll();
   
     return $this->respond($res);
+  }
+
+  public function likePost($id = null) {
+    /** @var Post */
+    $post = $this->model->find($id);
+    if (is_null($post)) {
+      return $this->failNotFound();
+    }
+    /** @var User */
+    $user = $this->request->user;
+  
+    $post->updateLikes($user->id);
+    $this->model->save($post);
+  
+    return $this->respondNoContent();
   }
 }
