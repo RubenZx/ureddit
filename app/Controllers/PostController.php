@@ -22,7 +22,7 @@ class PostController extends ResourceController {
   }
 
   public function show($id = null) {
-    $post = $this->model->reindex(false)->with(["users", "tags"])->find($id);
+    $post = $this->model->reindex(false)->with(["users", "tags", "likes"])->find($id);
 
     return (is_null($post) ? $this->failNotFound() : $this->respond($post));
   }
@@ -81,7 +81,7 @@ class PostController extends ResourceController {
       return $this->failNotFound();
     }
 
-    $res = $this->model->orderBy("created_at", "DESC")->reindex(false)->with(['users', 'tags'])->where('user_id', $user_id)->findAll();
+    $res = $this->model->orderBy("created_at", "DESC")->reindex(false)->with(['users', 'tags', 'likes'])->where('user_id', $user_id)->findAll();
   
     return $this->respond($res);
   }
