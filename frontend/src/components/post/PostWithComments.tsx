@@ -1,114 +1,48 @@
-import {
-  Card,
-  Col,
-  Input,
-  Loading,
-  Row,
-  Spacer,
-  Text,
-  User,
-} from '@zeit-ui/react'
-import React, { useEffect, useState } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import { Card, Col, Loading, Row, Spacer, Spinner, Text } from '@zeit-ui/react'
+import React, { useState } from 'react'
 import { useParams } from 'react-router'
-import * as yup from 'yup'
-import NotAvatarBlack from '../../assets/notavatarblack.png'
-import NotAvatarWhite from '../../assets/notavatarwhite.png'
-import { commentPost, getPost } from '../../services/api'
+import useApi from '../../hooks/useApi'
 import { useAuth } from '../../services/Auth'
-import { Post as PostType } from '../../services/types'
+import { Comments, Post as PostType } from '../../services/types'
 import MyButton from '../buttons/MyButton'
 import MyModal from '../modal/MyModal'
 import { modalTypes } from '../navbar/GeneralBar'
-import { useTheme } from '../ThemeContext'
+import Comment from './Comment'
+import CommentForm from './CommentForm'
 import Post from './Post'
 import PostsNotFound from './PostsNotFound'
 
-const validationCommentSchema = yup.object().shape({
-  content: yup.string().required('Please, enter a comment'),
-})
-
 export default () => {
-  const [loaded, setLoaded] = useState(false)
   const [visible, setVisible] = useState(false)
-  const [post, setPost] = useState<PostType>()
   const [modalType, setModalType] = useState<modalTypes>('login')
-  const { isUserLoggedIn, user } = useAuth()
 
-  const { handleSubmit, errors, control, setError, formState } = useForm({
-    validationSchema: validationCommentSchema,
+  const { postid } = useParams()
+  const { isUserLoggedIn } = useAuth()
+
+  const { response, loading, reFetch } = useApi<Comments>({
+    url: `posts/${postid}/comments`,
+    trigger: postid,
   })
 
-  const { themeType } = useTheme()
-  const { postid } = useParams()
-
-  const onSubmit = async (values: Record<string, any>) => {
-    try {
-      await commentPost({ ...values, post_id: postid })
-    } catch (error) {
-      setError(
-        'server',
-        error.response.status,
-        error.response.data.messages.error,
-      )
-    }
-  }
-
-  useEffect(() => {
-    ;(async () => {
-      setPost(await getPost(+postid))
-      setLoaded(true)
-    })()
-  }, [postid])
+  const { response: postsResponse, loading: postsLoading } = useApi<PostType>({
+    url: `posts/${postid}`,
+    trigger: postid,
+  })
 
   return (
-    <Row style={{ marginTop: '20px', marginBottom: '20px' }}>
-      {post ? (
+    <Row
+      justify="center"
+      style={{ marginTop: '20px', marginBottom: '20px', height: '10vh' }}
+    >
+      {postsLoading ? (
+        <Loading>Loading post</Loading>
+      ) : postsResponse ? (
         <Col>
-          <Post {...post} />
+          <Post {...postsResponse.data} />
           <Row justify="center">
             <Card style={{ maxWidth: '600pt', marginTop: '20px' }}>
               {isUserLoggedIn ? (
-                <form onSubmit={(event) => handleSubmit(onSubmit)(event)}>
-                  <Row align="middle">
-                    <User
-                      name={''}
-                      src={
-                        user?.avatar
-                          ? '/images/' + user.avatar
-                          : themeType === 'dark'
-                          ? NotAvatarBlack
-                          : NotAvatarWhite
-                      }
-                    />
-                    <Controller
-                      as={Input}
-                      name="content"
-                      width="100%"
-                      control={control}
-                      defaultValue=""
-                      placeholder={
-                        (errors.content && errors.content.message) ||
-                        'New comment...'
-                      }
-                      status={
-                        errors.content && errors.content.message
-                          ? 'error'
-                          : undefined
-                      }
-                    />
-                    <Spacer x={1} inline />
-                    <MyButton
-                      loading={formState.isSubmitting}
-                      size="small"
-                      type="success"
-                      ghost
-                      shadow
-                    >
-                      Comment
-                    </MyButton>
-                  </Row>
-                </form>
+                <CommentForm onComment={reFetch} postid={postid} />
               ) : (
                 <Row justify="space-between" align="middle">
                   <Text>Login or sign up to leave a comment</Text>
@@ -142,14 +76,31 @@ export default () => {
               )}
             </Card>
           </Row>
-          <Row justify="center">
-            <Text>COMMENTS HERE</Text>
+          <Row justify="center" style={{ marginBottom: '50px' }}>
+            <Card style={{ maxWidth: '600pt', marginTop: '20px' }}>
+              {loading ? (
+                <Row justify="center">
+                  <Spinner />
+                </Row>
+              ) : response ? (
+                response.data.data.map((comment, idk) => (
+                  <Comment
+                    onComment={reFetch}
+                    postid={postid}
+                    comment={comment}
+                    key={idk}
+                  />
+                ))
+              ) : (
+                <Text>
+                  There are no comments yet, be the first on leave a comment
+                </Text>
+              )}
+            </Card>
           </Row>
         </Col>
-      ) : loaded ? (
-        <PostsNotFound />
       ) : (
-        <Loading>Loading</Loading>
+        <PostsNotFound />
       )}
       <MyModal
         closeHandler={() => setVisible(false)}

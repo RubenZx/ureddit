@@ -1,7 +1,13 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core'
 import { Divider, Row, User } from '@zeit-ui/react'
-import { LogOut, Moon, Sun, User as UserIcon } from '@zeit-ui/react-icons'
+import {
+  LogOut,
+  Moon,
+  Settings,
+  Sun,
+  User as UserIcon,
+} from '@zeit-ui/react-icons'
 import { useCallback, useRef, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { CSSTransition } from 'react-transition-group'
@@ -67,6 +73,12 @@ const Dropdown = () => {
                 onClick={() => navigate('u/' + user?.username)}
               >
                 My profile
+              </DropdownItem>
+              <DropdownItem
+                leftIcon={<Settings />}
+                onClick={() => navigate('settings')}
+              >
+                Edit profile
               </DropdownItem>
               {themeType === 'light' ? (
                 <DropdownItem leftIcon={<Moon />} onClick={switchTheme}>

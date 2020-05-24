@@ -16,7 +16,8 @@ import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
 import * as yup from 'yup'
-import { createPost, getTags, sendFiles } from '../../services/api'
+import useApi from '../../hooks/useApi'
+import { createPost, sendFiles } from '../../services/api'
 import IconButton from '../buttons/IconButton'
 import MyButton from '../buttons/MyButton'
 import ImageForm from '../images/ImageForm'
@@ -30,8 +31,15 @@ const postValidationSchema = yup.object().shape({
 const NewPost = () => {
   const [open, setOpen] = useState(false)
   const [file, setFile] = useState<File[]>([])
-  const [tags, setTags] = useState<Record<'id' | 'name', string>[]>()
   const [fileError, setFileError] = useState(false)
+
+  const { response } = useApi<
+    {
+      id: string
+      name: string
+    }[]
+  >({ url: 'tags', trigger: '' })
+
   const [, setToast] = useToasts()
   const openToast = (type: NormalTypes, text: string) =>
     setToast({
@@ -39,6 +47,7 @@ const NewPost = () => {
       type,
       delay: 2500,
     })
+
   const { handleSubmit, errors, control, formState } = useForm({
     validationSchema: postValidationSchema,
   })
@@ -55,12 +64,6 @@ const NewPost = () => {
       setTimeout(() => navigate('/'), 2500)
     } catch (e) {}
   }
-
-  useEffect(() => {
-    ;(async () => {
-      setTags(await getTags())
-    })()
-  }, [])
 
   useEffect(() => {
     if (file !== undefined) {
@@ -104,8 +107,8 @@ const NewPost = () => {
                     placeholder="Choose a tag"
                     control={control}
                   >
-                    {tags &&
-                      tags.map((t) => (
+                    {response &&
+                      response.data.map((t) => (
                         <Select.Option key={t.id} value={t.id}>
                           {t.name}
                         </Select.Option>

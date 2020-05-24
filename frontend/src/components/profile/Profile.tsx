@@ -1,11 +1,10 @@
 import { Col, Loading, Row } from '@zeit-ui/react'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useParams } from 'react-router'
-import { getPostsByUserId, getUser } from '../../services/api'
-import { Post as PostType, User } from '../../services/types'
-import Post from '../post/Post'
-import PostsNotFound from '../post/PostsNotFound'
+import useApi from '../../hooks/useApi'
+import { User } from '../../services/types'
 import ProfileCard from './ProfileCard'
+import UsersPosts from './UsersPosts'
 
 export const MyRow = {
   display: 'flow-root',
@@ -15,44 +14,29 @@ export const MyRow = {
 }
 
 export default () => {
-  const [posts, setPosts] = useState<PostType[]>()
-  const [user, setUser] = useState<User>()
-  const [loaded, setLoaded] = useState(false)
   const { username } = useParams()
-
-  useEffect(() => {
-    ;(async () => {
-      setUser(await getUser(username))
-    })()
-  }, [username])
-
-  useEffect(() => {
-    if (user?.id) {
-      ;(async () => {
-        setPosts(await getPostsByUserId(user?.id))
-        setLoaded(true)
-      })()
-    }
-  }, [user])
+  const { response, loading } = useApi<User>({
+    url: `users/${username}`,
+    trigger: username,
+  })
 
   return (
     <Row align="middle" style={MyRow} gap={1}>
-      {!loaded ? (
-        <Loading>Loading</Loading>
-      ) : posts && posts.length > 0 ? (
-        <>
-          <Col span={16}>
-            {posts.map((p, k) => (
-              <Post {...p} key={k} />
-            ))}
-          </Col>
-          <Col span={8}>
-            <ProfileCard user={user} />
-          </Col>
-        </>
-      ) : (
-        <PostsNotFound />
-      )}
+      <Col span={16}>
+        {loading ? (
+          <Loading>Loading posts</Loading>
+        ) : (
+          response && <UsersPosts userid={String(response.data.id)} />
+        )}
+      </Col>
+
+      <Col span={8}>
+        {loading ? (
+          <Loading>Loading user data</Loading>
+        ) : (
+          <ProfileCard user={response?.data} />
+        )}
+      </Col>
     </Row>
   )
 }

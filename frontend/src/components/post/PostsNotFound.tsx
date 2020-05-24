@@ -11,7 +11,7 @@ export default () => (
             <Pin />
           </Row>
           <Row justify="center">
-            <Text h3>Posts not found</Text>
+            <Text h3>There aren't posts yet</Text>
           </Row>
         </Col>
       </Row>

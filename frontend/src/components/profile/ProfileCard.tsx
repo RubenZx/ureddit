@@ -2,6 +2,7 @@ import { Card, Col, Link, Row, Spacer, Text, User } from '@zeit-ui/react'
 import { AtSign } from '@zeit-ui/react-icons'
 import moment from 'moment'
 import React from 'react'
+import { useNavigate } from 'react-router'
 import NotAvatarBlack from '../../assets/notavatarblack.png'
 import NotAvatarWhite from '../../assets/notavatarwhite.png'
 import { User as UserType } from '../../services/types'
@@ -9,6 +10,7 @@ import { useTheme } from '../ThemeContext'
 
 export default ({ user }: { user?: UserType }) => {
   const { themeType, palette } = useTheme()
+  const navigate = useNavigate()
   return (
     <Row justify="center" style={{ marginTop: '20px' }}>
       {user && (
@@ -24,7 +26,9 @@ export default ({ user }: { user?: UserType }) => {
                   : NotAvatarWhite
               }
             >
-              <User.Link href={user.username}>u/{user.username}</User.Link>
+              <User.Link onClick={() => navigate('u/' + user.username)}>
+                u/{user.username}
+              </User.Link>
             </User>
           </Row>
           <Row style={{ marginTop: '20px' }} align="bottom">

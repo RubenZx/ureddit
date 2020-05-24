@@ -32,7 +32,6 @@ export default ({
   updated_at,
 }: Post) => {
   const navigate = useNavigate()
-
   const [, setToast] = useToasts()
   const { copy } = useClipboard()
   const handler = () => {
@@ -40,27 +39,10 @@ export default ({
     setToast({ type: 'success', text: 'Link copied successfully!' })
   }
 
-  // const userInLikes = likes.find((like) => +like.user_id === currentUser?.id)
-  // const lks = likes.filter((like) => id === like.post_id)
-
   return (
     <Row justify="center" style={{ marginTop: '20px' }}>
       <Card style={{ maxWidth: '600pt' }}>
         <Row>
-          {/* <Col span={1} style={{ marginRight: '20px' }}>
-            <IconButton
-              disabled={userInLikes !== undefined}
-              icon={ArrowUp}
-              onClick={(event) => event.preventDefault()}
-              style={{ paddingRight: '0.5rem' }}
-            />
-            <Row justify="center">{likes.length}</Row>
-            <IconButton
-              icon={ArrowDown}
-              onClick={(event) => event.preventDefault()}
-              style={{ paddingRight: '0.5rem' }}
-            />
-          </Col> */}
           <Col>
             <Text small>
               Posted by{' '}
