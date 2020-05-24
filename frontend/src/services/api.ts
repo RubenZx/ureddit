@@ -1,10 +1,6 @@
-import axios, { AxiosError } from 'axios'
+import { api } from './Auth'
 import { LocalStorageService, Tokens } from './LocalStorage'
 import { Post } from './types'
-
-const api = axios.create({
-  baseURL: 'http://localhost:3000/api/',
-})
 
 export const login = async (data: Record<'email' | 'password', string>) => {
   const res = await api.post('auth/login', data)
@@ -59,6 +55,16 @@ export const sendFiles = async (files: File[]) => {
   return { image: res.data.uploaded[0] }
 }
 
+export const likePost = async (post_id: string) => {
+  const res = await api.post('posts/' + post_id + '/like')
+  return res.data
+}
+
+export const commentPost = async (data: Record<string, string>) => {
+  const res = await api.post('posts/' + data.post_id + '/comment', data)
+  return res.data
+}
+
 export const createPost = async (
   data: Record<'title' | 'tag_id' | 'description' | 'image', string>,
 ) => {
@@ -95,44 +101,3 @@ export const getUser = async (user: string) => {
   const res = await api.get('users/' + user)
   return res.data
 }
-
-api.interceptors.request.use(
-  (config) => {
-    const { accessToken } = LocalStorageService
-    if (accessToken) {
-      config.headers['Authorization'] = `Bearer ${accessToken}`
-    }
-    if (!!config.headers['Content-Type']) {
-      config.headers['Content-Type'] = 'application/json'
-    }
-    return config
-  },
-  (error) => Promise.reject(error),
-)
-
-api.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const { config, response } = error as AxiosError
-
-    if (response!.status === 401 && config.url === 'auth/refresh-token') {
-      // history.push('/login')
-      return Promise.reject(error)
-    }
-
-    if (response!.status === 401 && !(config as any)._retry) {
-      ;(config as any)._retry = true
-      const res = await api.post('auth/refresh-token', {
-        refreshToken: LocalStorageService.refreshToken,
-      })
-      if (res.status === 201) {
-        LocalStorageService.setTokens(res.data as Tokens)
-        api.defaults.headers.common[
-          'Authorization'
-        ] = `Bearer ${LocalStorageService.accessToken}`
-        return api(config)
-      }
-    }
-    return Promise.reject(error)
-  },
-)

@@ -6,7 +6,7 @@ export type Tokens = {
 }
 
 export class LocalStorageService {
-  public static setTokens({ accessToken, refreshToken }: Tokens): void {
+  public static setTokens({ accessToken, refreshToken }: Tokens) {
     accessToken && localStorage.setItem('accessToken', accessToken)
     refreshToken && localStorage.setItem('refreshToken', refreshToken)
   }
@@ -22,15 +22,15 @@ export class LocalStorageService {
   public static get isUserLoggedIn() {
     if (!!this.accessToken && !!this.refreshToken) {
       const { exp } = jwtDecode<{ exp: number }>(this.accessToken)
-      return Date.now() / 1000 < exp
+      return Date.now() <= exp * 1000
     }
     return false
   }
 
-  public static get userLogged() {
+  public static get userId() {
     if (!!this.accessToken && !!this.refreshToken) {
       const { id } = jwtDecode<{ id: string }>(this.accessToken)
-      return { id }
+      return id
     }
     return undefined
   }

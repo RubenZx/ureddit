@@ -3,12 +3,18 @@ export interface Post {
   description: string
   id: string
   image: string
-  likes: string
+  likes: Like[]
   tag: Tag
   tag_id: string
   title: string
   updated_at: string
   user: User
+  user_id: string
+}
+
+export interface Like {
+  id: string
+  post_id: string
   user_id: string
 }
 
@@ -18,7 +24,7 @@ export interface Tag {
 }
 
 export interface User {
-  avatar?: string
+  avatar: any
   created_at: string
   email: string
   id: number
