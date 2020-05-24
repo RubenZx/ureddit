@@ -3,7 +3,7 @@ import { User } from '@zeit-ui/react-icons'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { getPosts } from '../../services/api'
-import { LocalStorageService } from '../../services/LocalStorage'
+import { useAuth } from '../../services/Auth'
 import { Post as PostType } from '../../services/types'
 import Post from './Post'
 import PostsNotFound from './PostsNotFound'
@@ -11,6 +11,7 @@ import PostsNotFound from './PostsNotFound'
 export default () => {
   const [posts, setPosts] = useState<PostType[]>()
   const [loaded, setLoaded] = useState(false)
+  const { isUserLoggedIn } = useAuth()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -23,7 +24,7 @@ export default () => {
   return (
     <Row style={{ marginTop: '20px', marginBottom: '20px' }}>
       <Col>
-        {LocalStorageService.isUserLoggedIn && (
+        {isUserLoggedIn && (
           <Row justify="center">
             <Card style={{ maxWidth: '600pt' }}>
               <Row align="middle">

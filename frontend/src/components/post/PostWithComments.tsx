@@ -5,17 +5,18 @@ import {
   Loading,
   Row,
   Spacer,
-  Spinner,
   Text,
   User,
 } from '@zeit-ui/react'
 import React, { useEffect, useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import { useParams } from 'react-router'
+import * as yup from 'yup'
 import NotAvatarBlack from '../../assets/notavatarblack.png'
 import NotAvatarWhite from '../../assets/notavatarwhite.png'
-import { getPost, getUser } from '../../services/api'
-import { LocalStorageService } from '../../services/LocalStorage'
-import { Post as PostType, User as UserType } from '../../services/types'
+import { commentPost, getPost } from '../../services/api'
+import { useAuth } from '../../services/Auth'
+import { Post as PostType } from '../../services/types'
 import MyButton from '../buttons/MyButton'
 import MyModal from '../modal/MyModal'
 import { modalTypes } from '../navbar/GeneralBar'
@@ -23,16 +24,35 @@ import { useTheme } from '../ThemeContext'
 import Post from './Post'
 import PostsNotFound from './PostsNotFound'
 
+const validationCommentSchema = yup.object().shape({
+  content: yup.string().required('Please, enter a comment'),
+})
+
 export default () => {
   const [loaded, setLoaded] = useState(false)
-  const [loadedUser, setLoadedUser] = useState(false)
   const [visible, setVisible] = useState(false)
   const [post, setPost] = useState<PostType>()
-  const [user, setUser] = useState<UserType>()
   const [modalType, setModalType] = useState<modalTypes>('login')
+  const { isUserLoggedIn, user } = useAuth()
+
+  const { handleSubmit, errors, control, setError, formState } = useForm({
+    validationSchema: validationCommentSchema,
+  })
 
   const { themeType } = useTheme()
   const { postid } = useParams()
+
+  const onSubmit = async (values: Record<string, any>) => {
+    try {
+      await commentPost({ ...values, post_id: postid })
+    } catch (error) {
+      setError(
+        'server',
+        error.response.status,
+        error.response.data.messages.error,
+      )
+    }
+  }
 
   useEffect(() => {
     ;(async () => {
@@ -41,15 +61,6 @@ export default () => {
     })()
   }, [postid])
 
-  useEffect(() => {
-    ;(async () => {
-      if (LocalStorageService.userLogged) {
-        setUser(await getUser(LocalStorageService.userLogged.id))
-        setLoadedUser(true)
-      }
-    })()
-  }, [])
-
   return (
     <Row style={{ marginTop: '20px', marginBottom: '20px' }}>
       {post ? (
@@ -57,9 +68,9 @@ export default () => {
           <Post {...post} />
           <Row justify="center">
             <Card style={{ maxWidth: '600pt', marginTop: '20px' }}>
-              {LocalStorageService.isUserLoggedIn ? (
-                <Row align="middle">
-                  {loadedUser ? (
+              {isUserLoggedIn ? (
+                <form onSubmit={(event) => handleSubmit(onSubmit)(event)}>
+                  <Row align="middle">
                     <User
                       name={''}
                       src={
@@ -70,19 +81,34 @@ export default () => {
                           : NotAvatarWhite
                       }
                     />
-                  ) : (
-                    <Spinner />
-                  )}
-                  <Input
-                    placeholder="New comment..."
-                    width="100%"
-                    onClick={() => {}}
-                  />
-                  <Spacer x={1} inline />
-                  <MyButton size="small" type="success" ghost shadow>
-                    Comment
-                  </MyButton>
-                </Row>
+                    <Controller
+                      as={Input}
+                      name="content"
+                      width="100%"
+                      control={control}
+                      defaultValue=""
+                      placeholder={
+                        (errors.content && errors.content.message) ||
+                        'New comment...'
+                      }
+                      status={
+                        errors.content && errors.content.message
+                          ? 'error'
+                          : undefined
+                      }
+                    />
+                    <Spacer x={1} inline />
+                    <MyButton
+                      loading={formState.isSubmitting}
+                      size="small"
+                      type="success"
+                      ghost
+                      shadow
+                    >
+                      Comment
+                    </MyButton>
+                  </Row>
+                </form>
               ) : (
                 <Row justify="space-between" align="middle">
                   <Text>Login or sign up to leave a comment</Text>

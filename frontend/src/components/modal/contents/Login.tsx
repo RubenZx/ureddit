@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from 'react-router'
 import * as yup from 'yup'
 import Logo from '../../../assets/logo.png'
 import { login } from '../../../services/api'
-import { LocalStorageService } from '../../../services/LocalStorage'
+import { useAuth } from '../../../services/Auth'
 import MyButton from '../../buttons/MyButton'
 import { TypeHandler } from '../MyModal'
 
@@ -23,11 +23,12 @@ const LoginContent: React.FC<TypeHandler> = ({ typeHandler }) => {
   })
   const navigate = useNavigate()
   const { pathname } = useLocation()
+  const { login: setTokens } = useAuth()
 
   const onSubmit = async (values: Record<string, any>) => {
     try {
       const tokens = await login(values)
-      LocalStorageService.setTokens(tokens)
+      setTokens(tokens)
       navigate(pathname)
       window.location.reload(false)
     } catch (error) {

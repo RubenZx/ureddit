@@ -1,16 +1,14 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core'
-import { Divider, Row, Spinner, User } from '@zeit-ui/react'
+import { Divider, Row, User } from '@zeit-ui/react'
 import { LogOut, Moon, Sun, User as UserIcon } from '@zeit-ui/react-icons'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { CSSTransition } from 'react-transition-group'
 import NotAvatarBlack from '../../assets/notavatarblack.png'
 import NotAvatarWhite from '../../assets/notavatarwhite.png'
 import { useOutsideClick } from '../../hooks/useOutsideClick'
-import { getUser, logout } from '../../services/api'
-import { LocalStorageService } from '../../services/LocalStorage'
-import { User as UserType } from '../../services/types'
+import { useAuth } from '../../services/Auth'
 import { useTheme } from '../ThemeContext'
 import './dropdown.css'
 import DropdownItem from './DropdownItem'
@@ -18,8 +16,7 @@ import DropdownItem from './DropdownItem'
 const Dropdown = () => {
   const [height, setHeight] = useState<number | undefined>(undefined)
   const [open, setOpen] = useState(false)
-  const [loaded, setLoaded] = useState(false)
-  const [user, setUser] = useState<UserType>()
+
   const ref = useRef(null)
   const onEnter = useCallback((node: HTMLElement) => {
     const height = node.offsetHeight
@@ -27,36 +24,24 @@ const Dropdown = () => {
   }, [])
   const navigate = useNavigate()
   const { themeType, switchTheme, palette } = useTheme()
+  const { logout, user } = useAuth()
 
   useOutsideClick(ref, () => setOpen(false))
 
-  useEffect(() => {
-    ;(async () => {
-      if (LocalStorageService.userLogged) {
-        setUser(await getUser(LocalStorageService.userLogged.id))
-        setLoaded(true)
-      }
-    })()
-  }, [])
-
   return (
     <Row justify="center">
-      {loaded ? (
-        <User
-          className="menu"
-          src={
-            user?.avatar
-              ? '/images/' + user?.avatar
-              : themeType === 'dark'
-              ? NotAvatarBlack
-              : NotAvatarWhite
-          }
-          name=""
-          onClick={() => setOpen(!open)}
-        />
-      ) : (
-        <Spinner />
-      )}
+      <User
+        className="menu"
+        src={
+          user?.avatar
+            ? '/images/' + user?.avatar
+            : themeType === 'dark'
+            ? NotAvatarBlack
+            : NotAvatarWhite
+        }
+        name=""
+        onClick={() => setOpen(!open)}
+      />
       {open && (
         <div
           ref={ref}
@@ -94,7 +79,7 @@ const Dropdown = () => {
               )}
 
               <Divider y={0} />
-              <DropdownItem leftIcon={<LogOut />} onClick={() => logout()}>
+              <DropdownItem leftIcon={<LogOut />} onClick={logout}>
                 Log out
               </DropdownItem>
             </div>

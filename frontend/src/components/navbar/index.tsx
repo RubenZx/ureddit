@@ -3,12 +3,12 @@ import * as Icon from '@zeit-ui/react-icons'
 import React from 'react'
 import { useNavigate } from 'react-router'
 import Logo from '../../assets/logo.png'
-import { LocalStorageService } from '../../services/LocalStorage'
+import { useAuth } from '../../services/Auth'
 import GeneralBar from './GeneralBar'
 import LoggedBar from './LoggedBar'
 
 const Navbar = () => {
-  const logged = LocalStorageService.isUserLoggedIn
+  const { isUserLoggedIn } = useAuth()
   const navigate = useNavigate()
   return (
     <>
@@ -38,7 +38,7 @@ const Navbar = () => {
             />
           </Row>
         </Col>
-        <Col span={10}>{logged ? <LoggedBar /> : <GeneralBar />}</Col>
+        <Col span={10}>{isUserLoggedIn ? <LoggedBar /> : <GeneralBar />}</Col>
       </Row>
       <Divider y={0} />
     </>

@@ -9,7 +9,7 @@ import MyButton from './buttons/MyButton'
 import ResendEmail from './ResendEmail'
 
 export default () => {
-  const { validationCode } = useParams()
+  const { code } = useParams()
   const { control, handleSubmit } = useForm()
   const navigate = useNavigate()
   const [, setToast] = useToasts()
@@ -54,11 +54,11 @@ export default () => {
               Validation code
               <Controller
                 as={Input}
-                value={validationCode}
+                value={code}
                 name="verificationCode"
                 width="100%"
                 control={control}
-                defaultValue={validationCode}
+                defaultValue={code}
               />
               <Row>
                 <ResendEmail />

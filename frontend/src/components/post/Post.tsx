@@ -14,20 +14,21 @@ import { Heart, MessageSquare, Share } from '@zeit-ui/react-icons'
 import moment from 'moment'
 import React from 'react'
 import { useNavigate } from 'react-router'
+import { likePost } from '../../services/api'
 import { Post } from '../../services/types'
 import './post.css'
 
 const { useClipboard } = Utils
 
 export default ({
-  id,
-  user,
-  image,
-  title,
+  created_at,
   description,
+  id,
+  image,
   likes,
   tag,
-  created_at,
+  title,
+  user,
   updated_at,
 }: Post) => {
   const navigate = useNavigate()
@@ -39,17 +40,21 @@ export default ({
     setToast({ type: 'success', text: 'Link copied successfully!' })
   }
 
+  // const userInLikes = likes.find((like) => +like.user_id === currentUser?.id)
+  // const lks = likes.filter((like) => id === like.post_id)
+
   return (
     <Row justify="center" style={{ marginTop: '20px' }}>
       <Card style={{ maxWidth: '600pt' }}>
         <Row>
           {/* <Col span={1} style={{ marginRight: '20px' }}>
             <IconButton
+              disabled={userInLikes !== undefined}
               icon={ArrowUp}
               onClick={(event) => event.preventDefault()}
               style={{ paddingRight: '0.5rem' }}
             />
-            <Row justify="center">{likes}</Row>
+            <Row justify="center">{likes.length}</Row>
             <IconButton
               icon={ArrowDown}
               onClick={(event) => event.preventDefault()}
@@ -74,7 +79,7 @@ export default ({
                 </Link>
               </Text>
               <Row align="middle">
-                {likes || 0}
+                {likes.length}
                 <Spacer x={0.3} />
                 <Heart color="red" size={18} />
               </Row>
@@ -85,14 +90,26 @@ export default ({
             </Text>
             <Row style={{ marginTop: '10px' }}>
               <Col span={2}>
-                <Link>
-                  <Row align="middle">
-                    <Heart size={18} />
-                    <Text small style={{ marginLeft: '5px' }}>
-                      Like
-                    </Text>
-                  </Row>
-                </Link>
+                <Row
+                  onClick={async () => {
+                    try {
+                      await likePost(id)
+                    } catch (e) {
+                      setToast({
+                        type: 'warning',
+                        text: 'Sign in or sign up to give a like!',
+                        delay: 3000,
+                      })
+                    }
+                  }}
+                  align="middle"
+                  style={{ cursor: 'pointer' }}
+                >
+                  <Heart size={18} />
+                  <Text small style={{ marginLeft: '5px' }}>
+                    Like
+                  </Text>
+                </Row>
               </Col>
               <Spacer x={0.5} />
               <Col span={4}>

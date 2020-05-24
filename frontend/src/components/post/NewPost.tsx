@@ -39,7 +39,7 @@ const NewPost = () => {
       type,
       delay: 2500,
     })
-  const { handleSubmit, errors, control } = useForm({
+  const { handleSubmit, errors, control, formState } = useForm({
     validationSchema: postValidationSchema,
   })
 
@@ -170,7 +170,12 @@ const NewPost = () => {
                       Cancel
                     </MyButton>
                     <Spacer x={0.5} inline />
-                    <MyButton size="small" type="success" shadow>
+                    <MyButton
+                      loading={formState.isSubmitting}
+                      size="small"
+                      type="success"
+                      shadow
+                    >
                       Post
                     </MyButton>
                   </Row>
