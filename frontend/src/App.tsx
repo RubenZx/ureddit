@@ -26,7 +26,9 @@ const App = () => {
           <Navbar />
           <Routes>
             <Route path={routes.home} element={<Posts />} />
+            <Route path={routes.post} element={<PostWithComments />} />
             <PrivateRoute path={routes.submit} element={<NewPost />} />
+            <PrivateRoute path={routes.settings} element={<>SETTINGS</>} />
             <NotLoggedRoute
               path={routes.validateAccount}
               element={<ValidateAccount />}
@@ -41,7 +43,6 @@ const App = () => {
             />
             <Route path={routes.profile} element={<Profile />} />
             <Route path={routes.editProfile} element={<EditProfile />} />
-            <Route path={routes.post} element={<PostWithComments />} />
             <Route path="/*" element={<NotFound />} />
           </Routes>
         </AuthProvider>

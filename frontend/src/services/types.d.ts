@@ -34,3 +34,19 @@ export interface User {
   username: string
   verified: boolean
 }
+
+export interface Comments {
+  data: Comment[]
+}
+
+export interface Comment {
+  children: Comment[]
+  comment_id: any
+  content: string
+  created_at: string
+  id: string
+  is_reply: string
+  updated_at: string
+  user: User
+  user_id: string
+}

@@ -1,6 +1,7 @@
 export const routes = {
   home: '/',
   submit: '/submit',
+  settings: '/settings',
   validateAccount: '/validate-account',
   validateWithCode: '/validate-account/:code',
   resetPassword: '/reset-password/:code',
