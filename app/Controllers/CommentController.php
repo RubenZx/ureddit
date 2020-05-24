@@ -39,9 +39,50 @@ class CommentController extends ResourceController {
       );
     }
     
-    /** @method bool addComments(array|int $discussions)*/
+    /** @method bool addComments(array|int $id)*/
     $post->addComments($id);
 
     return $this->respondNoContent();
+  }
+
+  public function view($post_id = null) {
+    $postsModel = new PostModel();
+
+    /** @var Post */
+    $post = $postsModel->find($post_id);
+
+    if (is_null($post)) {
+      return $this->failNotFound();
+    }
+
+    return $this->respond(['data' => $this->nested($post->comments)]);
+  }
+
+  /**
+   *
+   * @param Comments[] $comments
+   * @return void
+   */
+  private function nested($comments) {
+    /** @var Comments[] */
+    $nested = [];
+    foreach ($comments as $comment) {
+      $comment->user;
+      $nested[$comment->id] = $comment->toRawArray();
+      $nested[$comment->id]["children"] = [];
+    }
+
+    foreach ($comments as $comment) {
+      if (!is_null($comment->comment_id)) {
+        $parent = &$nested[$comment->comment_id];
+        $parent["children"][] = &$nested[$comment->id];
+      }
+    }
+
+    return array_values(
+      array_filter($nested, function ($comment) {
+        return is_null($comment["comment_id"]);
+      })
+    );
   }
 }

@@ -22,7 +22,7 @@ class PostController extends ResourceController {
   }
 
   public function show($id = null) {
-    $post = $this->model->reindex(false)->with(["users", "tags", "likes", "comments"])->find($id);
+    $post = $this->model->reindex(false)->with(["users", "tags", "likes"])->find($id);
 
     return (is_null($post) ? $this->failNotFound() : $this->respond($post));
   }
