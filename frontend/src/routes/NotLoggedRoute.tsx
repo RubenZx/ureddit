@@ -1,12 +1,11 @@
 import React from 'react'
 import { Navigate, Route, RouteProps } from 'react-router'
-import { LocalStorageService } from '../services/LocalStorage'
+import { useAuth } from '../services/Auth'
 
-const NotLoggedRoute = (props: RouteProps) =>
-  LocalStorageService.isUserLoggedIn ? (
-    <Navigate to="/" />
-  ) : (
-    <Route {...props} />
-  )
+const NotLoggedRoute = (props: RouteProps) => {
+  const { isUserLoggedIn } = useAuth()
+
+  return isUserLoggedIn ? <Navigate to="/" /> : <Route {...props} />
+}
 
 export default NotLoggedRoute

@@ -1,12 +1,11 @@
 import React from 'react'
 import { Navigate, Route, RouteProps } from 'react-router'
-import { LocalStorageService } from '../services/LocalStorage'
+import { useAuth } from '../services/Auth'
 
-const PrivateRoute = (props: RouteProps) =>
-  LocalStorageService.isUserLoggedIn ? (
-    <Route {...props} />
-  ) : (
-    <Navigate to="/" />
-  )
+const PrivateRoute = (props: RouteProps) => {
+  const { isUserLoggedIn } = useAuth()
+
+  return isUserLoggedIn ? <Route {...props} /> : <Navigate to="/" />
+}
 
 export default PrivateRoute
