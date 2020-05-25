@@ -1,13 +1,12 @@
 import { Input, Row, Spacer, User } from '@zeit-ui/react'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 import * as yup from 'yup'
-import NotAvatarBlack from '../../assets/notavatarblack.png'
-import NotAvatarWhite from '../../assets/notavatarwhite.png'
 import { commentPost } from '../../services/api'
 import { useAuth } from '../../services/Auth'
 import MyButton from '../buttons/MyButton'
-import { useTheme } from '../ThemeContext'
+import Gravatar from '../Gravatar'
 
 const validationCommentSchema = yup.object().shape({
   content: yup.string().required('Please, enter a comment'),
@@ -23,7 +22,7 @@ export default ({
   commentid?: string | null
 }) => {
   const { user } = useAuth()
-  const { themeType } = useTheme()
+  const navigate = useNavigate()
 
   const {
     handleSubmit,
@@ -55,16 +54,21 @@ export default ({
       style={{ width: '100%' }}
     >
       <Row align="middle">
-        <User
-          name={''}
-          src={
-            user?.avatar
-              ? '/images/' + user.avatar
-              : themeType === 'dark'
-              ? NotAvatarBlack
-              : NotAvatarWhite
-          }
-        />
+        {user && !user.avatar ? (
+          <Gravatar
+            email={user.email}
+            name=""
+            className="menu"
+            onClick={() => navigate('/u/' + user?.username)}
+          />
+        ) : (
+          <User
+            className="menu"
+            src={'/images/' + user?.avatar}
+            name=""
+            onClick={() => navigate('/u/' + user?.username)}
+          />
+        )}
         <Controller
           as={Input}
           name="content"

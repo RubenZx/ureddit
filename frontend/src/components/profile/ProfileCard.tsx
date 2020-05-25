@@ -2,13 +2,14 @@ import { Card, Col, Link, Row, Spacer, Text, User } from '@zeit-ui/react'
 import { AtSign } from '@zeit-ui/react-icons'
 import moment from 'moment'
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { User as UserType } from '../../services/types'
 import Gravatar from '../Gravatar'
 import { useTheme } from '../ThemeContext'
 
 export default ({ user }: { user?: UserType }) => {
   const { palette } = useTheme()
-
+  const navigate = useNavigate()
   return (
     <Row justify="center" style={{ marginTop: '20px' }}>
       {user && (
@@ -16,13 +17,13 @@ export default ({ user }: { user?: UserType }) => {
           <Row>
             {user && !user.avatar ? (
               <Gravatar email={user.email} name="" className="menu">
-                <User.Link onClick={() => window.location.reload()}>
+                <User.Link onClick={() => navigate('/u/' + user?.username)}>
                   u/{user.username}
                 </User.Link>
               </Gravatar>
             ) : (
               <User className="menu" src={'/images/' + user?.avatar} name="">
-                <User.Link onClick={() => window.location.reload()}>
+                <User.Link onClick={() => navigate('/u/' + user?.username)}>
                   u/{user.username}
                 </User.Link>
               </User>
