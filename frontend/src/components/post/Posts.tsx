@@ -1,7 +1,7 @@
 import { Card, Col, Input, Loading, Row, Spacer } from '@zeit-ui/react'
 import { User } from '@zeit-ui/react-icons'
 import React from 'react'
-import { useNavigate } from 'react-router'
+import { useNavigate } from 'react-router-dom'
 import useApi from '../../hooks/useApi'
 import { useAuth } from '../../services/Auth'
 import { Post as PostType } from '../../services/types'

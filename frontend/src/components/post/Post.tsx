@@ -13,7 +13,7 @@ import {
 import { Heart, MessageSquare, Share } from '@zeit-ui/react-icons'
 import moment from 'moment'
 import React from 'react'
-import { useNavigate } from 'react-router'
+import { useNavigate } from 'react-router-dom'
 import { likePost } from '../../services/api'
 import { Post } from '../../services/types'
 import './post.css'

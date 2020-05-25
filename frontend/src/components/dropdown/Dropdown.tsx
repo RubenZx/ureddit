@@ -9,12 +9,11 @@ import {
   User as UserIcon,
 } from '@zeit-ui/react-icons'
 import { useCallback, useRef, useState } from 'react'
-import { useNavigate } from 'react-router'
+import { useNavigate } from 'react-router-dom'
 import { CSSTransition } from 'react-transition-group'
-import NotAvatarBlack from '../../assets/notavatarblack.png'
-import NotAvatarWhite from '../../assets/notavatarwhite.png'
 import { useOutsideClick } from '../../hooks/useOutsideClick'
 import { useAuth } from '../../services/Auth'
+import Gravatar from '../Gravatar'
 import { useTheme } from '../ThemeContext'
 import './dropdown.css'
 import DropdownItem from './DropdownItem'
@@ -36,18 +35,21 @@ const Dropdown = () => {
 
   return (
     <Row justify="center">
-      <User
-        className="menu"
-        src={
-          user?.avatar
-            ? '/images/' + user?.avatar
-            : themeType === 'dark'
-            ? NotAvatarBlack
-            : NotAvatarWhite
-        }
-        name=""
-        onClick={() => setOpen(!open)}
-      />
+      {user && !user.avatar ? (
+        <Gravatar
+          email={user.email}
+          name=""
+          className="menu"
+          onClick={() => setOpen(!open)}
+        />
+      ) : (
+        <User
+          className="menu"
+          src={'/images/' + user?.avatar}
+          name=""
+          onClick={() => setOpen(!open)}
+        />
+      )}
       {open && (
         <div
           ref={ref}

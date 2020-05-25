@@ -1,7 +1,7 @@
 import { Col, Input, Link, Note, Spacer, Text } from '@zeit-ui/react'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router'
+import { useNavigate } from 'react-router-dom'
 import * as yup from 'yup'
 import Logo from '../../../assets/logo.png'
 import { register } from '../../../services/api'

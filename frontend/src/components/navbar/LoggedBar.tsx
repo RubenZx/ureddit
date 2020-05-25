@@ -1,7 +1,7 @@
 import { Row } from '@zeit-ui/react'
 import { Edit } from '@zeit-ui/react-icons'
 import React from 'react'
-import { useNavigate } from 'react-router'
+import { useNavigate } from 'react-router-dom'
 import IconButton from '../buttons/IconButton'
 import Dropdown from '../dropdown/Dropdown'
 

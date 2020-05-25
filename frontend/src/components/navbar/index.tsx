@@ -1,7 +1,7 @@
 import { Col, Divider, Input, Link, Row, Spacer } from '@zeit-ui/react'
 import * as Icon from '@zeit-ui/react-icons'
 import React from 'react'
-import { useNavigate } from 'react-router'
+import { useNavigate } from 'react-router-dom'
 import Logo from '../../assets/logo.png'
 import { useAuth } from '../../services/Auth'
 import GeneralBar from './GeneralBar'
