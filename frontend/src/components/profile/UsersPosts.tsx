@@ -15,7 +15,7 @@ export default ({ userid }: { userid: string }) => {
     <>
       {loading ? (
         <Loading>Loading posts</Loading>
-      ) : response ? (
+      ) : response && response.data.length > 0 ? (
         response.data.map((p, k) => <Post {...p} key={k} />)
       ) : (
         <PostsNotFound />

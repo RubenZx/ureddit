@@ -2,34 +2,31 @@ import { Card, Col, Link, Row, Spacer, Text, User } from '@zeit-ui/react'
 import { AtSign } from '@zeit-ui/react-icons'
 import moment from 'moment'
 import React from 'react'
-import { useNavigate } from 'react-router'
-import NotAvatarBlack from '../../assets/notavatarblack.png'
-import NotAvatarWhite from '../../assets/notavatarwhite.png'
 import { User as UserType } from '../../services/types'
+import Gravatar from '../Gravatar'
 import { useTheme } from '../ThemeContext'
 
 export default ({ user }: { user?: UserType }) => {
-  const { themeType, palette } = useTheme()
-  const navigate = useNavigate()
+  const { palette } = useTheme()
+
   return (
     <Row justify="center" style={{ marginTop: '20px' }}>
       {user && (
         <Card style={{ maxWidth: '600pt' }}>
           <Row>
-            <User
-              name={user.name}
-              src={
-                user.avatar
-                  ? '/images/' + user.avatar
-                  : themeType === 'dark'
-                  ? NotAvatarBlack
-                  : NotAvatarWhite
-              }
-            >
-              <User.Link onClick={() => navigate('u/' + user.username)}>
-                u/{user.username}
-              </User.Link>
-            </User>
+            {user && !user.avatar ? (
+              <Gravatar email={user.email} name="" className="menu">
+                <User.Link onClick={() => window.location.reload()}>
+                  u/{user.username}
+                </User.Link>
+              </Gravatar>
+            ) : (
+              <User className="menu" src={'/images/' + user?.avatar} name="">
+                <User.Link onClick={() => window.location.reload()}>
+                  u/{user.username}
+                </User.Link>
+              </User>
+            )}
           </Row>
           <Row style={{ marginTop: '20px' }} align="bottom">
             <Col>
