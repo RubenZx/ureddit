@@ -19,9 +19,9 @@ export interface GravatarProps extends Omit<UserProps, 'src'> {
   rating?: 'g' | 'pg' | 'r' | 'x'
 }
 
-const GRAVATAR_URI = 'https://www.gravatar.com/avatar/'
+export const GRAVATAR_URI = 'https://www.gravatar.com/avatar/'
 
-const queryString = (params: Record<string, unknown>) =>
+export const queryString = (params: Record<string, unknown>) =>
   '?' +
   Object.keys(params)
     .map((key) => key + '=' + params[key])
