@@ -1,9 +1,23 @@
+export interface PostsResponse {
+  currentPage: number
+  data: Post[]
+  hasMore: boolean
+  next: string
+  pageCount: number
+  pageSelector: string
+  perPage: number
+  previous: any
+  segment: number
+  total: number
+  uri: Uri
+}
+
 export interface Post {
   created_at: string
   description: string
   id: string
   image: string
-  likes: Like[]
+  likes: any[]
   tag: Tag
   tag_id: string
   title: string
@@ -11,6 +25,8 @@ export interface Post {
   user: User
   user_id: string
 }
+
+export interface Uri {}
 
 export interface Like {
   id: string

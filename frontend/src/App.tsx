@@ -6,6 +6,7 @@ import NotFound from './components/NotFound'
 import NewPost from './components/post/NewPost'
 import Posts from './components/post/Posts'
 import PostWithComments from './components/post/PostWithComments'
+import SearchPosts from './components/post/SearchPosts'
 import EditProfile from './components/profile/EditProfile'
 import Profile from './components/profile/Profile'
 import Settings from './components/profile/Settings'
@@ -27,6 +28,7 @@ const App = () => {
           <Navbar />
           <Routes>
             <Route path={routes.home} element={<Posts />} />
+            <Route path={routes.search} element={<SearchPosts />} />
             <Route path={routes.post} element={<PostWithComments />} />
             <PrivateRoute path={routes.submit} element={<NewPost />} />
             <PrivateRoute path={routes.settings} element={<Settings />} />
