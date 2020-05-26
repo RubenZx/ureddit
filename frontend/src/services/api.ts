@@ -70,3 +70,8 @@ export const createPost = async (
   const res = await api.post('posts', data)
   return res.data
 }
+
+export const updateUser = async (id: number, data: Record<string, any>) => {
+  const res = await api.put('users/' + id, data)
+  return res.data
+}
