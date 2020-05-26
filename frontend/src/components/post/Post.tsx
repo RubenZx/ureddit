@@ -12,7 +12,7 @@ import {
 } from '@zeit-ui/react'
 import { Heart, MessageSquare, Share } from '@zeit-ui/react-icons'
 import moment from 'moment'
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { likePost } from '../../services/api'
 import { Post } from '../../services/types'
@@ -31,6 +31,7 @@ export default ({
   user,
   updated_at,
 }: Post) => {
+  const [likess, setLikess] = useState(likes.length)
   const navigate = useNavigate()
   const [, setToast] = useToasts()
   const { copy } = useClipboard()
@@ -61,7 +62,7 @@ export default ({
                 </Link>
               </Text>
               <Row align="middle">
-                {likes.length}
+                {likess}
                 <Spacer x={0.3} />
                 <Heart color="red" size={18} />
               </Row>
@@ -75,7 +76,8 @@ export default ({
                 <Row
                   onClick={async () => {
                     try {
-                      await likePost(id)
+                      const { likes } = await likePost(id)
+                      setLikess(likes)
                     } catch (e) {
                       setToast({
                         type: 'warning',

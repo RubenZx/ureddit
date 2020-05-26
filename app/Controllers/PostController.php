@@ -98,6 +98,6 @@ class PostController extends ResourceController {
     $post->updateLikes($user->id);
     $this->model->save($post);
   
-    return $this->respondNoContent();
+    return $this->respond(['likes' => $post->likes]);
   }
 }
