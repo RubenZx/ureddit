@@ -60,7 +60,7 @@ const NewPost = () => {
     try {
       const res = await sendFiles(file)
       await createPost({ ...values, ...res })
-      openToast('success', 'Post created successfully, redireting to home')
+      openToast('success', 'Post created successfully, redirecting to home')
       setTimeout(() => navigate('/'), 2500)
     } catch (e) {}
   }
