@@ -6,7 +6,7 @@
     "@emotion/core": "^10.0.28",
     "@zeit-ui/react": "^1.2.1",
     "@zeit-ui/react-icons": "^1.2.1",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "blueimp-md5": "^2.16.0",
     "jwt-decode": "^2.2.0",
     "moment": "^2.26.0",
